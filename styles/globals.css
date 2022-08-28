@@ -1,26 +1,315 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-a {
-  color: inherit;
-  text-decoration: none;
+:root {
+  color-scheme: dark;
 }
 
 * {
-  box-sizing: border-box;
+  scroll-behavior: smooth;
+  @apply scroll-mt-8;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@font-face {
+  font-family: 'MonoLisa';
+  src: url('/fonts/MonoLisa-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400;
+}
+
+/* Code blur Effect */
+.has-focus-lines .token-line:not(.line-focus) {
+  transition: filter 0.35s, opacity 0.35s, background-color 0.35s;
+  filter: blur(0.1rem);
+  opacity: 0.5;
+}
+
+.has-focus-lines:hover .token-line:not(.line-focus) {
+  filter: blur(0px);
+  opacity: 1;
+}
+
+/* Code Highlight */
+.token-line {
+  display: block;
+  padding-right: 1rem;
+  position: relative;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  @apply text-yellow-400 !important;
+}
+
+pre,
+code {
+  @apply font-mono;
+}
+
+.prose pre {
+  position: relative;
+}
+
+.prose pre > code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+pre[data-line-numbers='true'] {
+  @apply px-0;
+}
+
+pre[data-line-numbers='true'] .has-add-line::before {
+  @apply text-green-700 !important;
+}
+
+pre[data-line-numbers='true'] .has-remove-line::before {
+  @apply text-red-700 !important;
+}
+
+pre[data-line-numbers='true'] [data-line-number]::before {
+  content: attr(data-line-number);
+  display: inline-block;
+  left: 0;
+  padding-left: 0;
+  padding-right: 1.5rem;
+  position: -webkit-sticky;
+  position: sticky;
+  text-align: right;
+  width: 4rem;
+  @apply text-gray-500 bg-code;
+}
+
+.highlight-word {
+  @apply bg-highlight/30 rounded-sm px-1;
+}
+
+.has-focus-lines:hover .token-line.highlight-line::before {
+  @apply border-l-2 border-l-yellow-400;
+}
+
+.has-diffs-lines .token-line.has-add-line::after {
+  @apply bg-green-700 !important;
+}
+
+.has-diffs-lines .token-line.has-remove-line::after {
+  @apply bg-red-700 !important;
+}
+
+.has-focus-lines:hover .token-line.highlight-line::after {
+  @apply bg-highlight/30;
+}
+
+pre[data-line-numbers='true'] .token-line.highlight-line::after,
+.has-diffs-lines .token-line.has-add-line::after,
+.has-diffs-lines .token-line.has-remove-line::after {
+  content: ' ';
+  left: 0;
+  opacity: 0.15;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.prose pre:not([data-lang='bash'])::after {
+  content: attr(data-lang);
+  display: inline-block;
+  font-size: 0.7rem;
+  opacity: 0.7;
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0px;
+  text-align: right;
+  transform: translate(-5px, 10px);
+  width: 200px;
+  margin-left: -200px;
+}
+
+.prose pre[data-line-numbers='true']:not([data-lang='sh'])::after {
+  padding-right: 0.7rem;
+}
+
+/* Syntax Highlight */
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  @apply text-green-500;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  @apply text-purple-500;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  @apply text-yellow-500;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  @apply text-blue-500;
+}
+
+.token.function,
+.token.class-name {
+  @apply text-pink-500;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  @apply text-yellow-500;
+}
+
+code[class*='language-'],
+pre[class*='language-'] {
+  @apply text-gray-800 dark:text-gray-50;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+pre {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.prose pre:not([data-lang='bash']) .plain {
+  color: #44dfff !important;
+}
+
+/* Terminal  */
+.command::before {
+  content: '$ ';
+  @apply text-gray-400/80 opacity-50 pointer-events-none;
+}
+
+/* Sandpack */
+
+.cm-scroller {
+  padding: 0 !important;
+}
+
+.cm-gutters {
+  border-right: 2px solid #5a69861f !important;
+  background: rgba(0, 0, 0, 0.1) !important;
+  @apply divide-x-2 backdrop-blur-md shadow-lg !important;
+}
+
+.cm-content {
+  @apply py-4 px-0 !important;
+}
+
+.cm-gutterElement {
+  @apply text-xs pointer-events-none select-none align-middle;
+}
+
+.sp-tabs {
+  @apply border-b-[1px] border-b-gray-700;
+}
+
+.cm-gutterElement {
+  padding: 0 5px 0 3px !important;
+}
+
+.cm-gutter {
+  min-width: 2rem !important;
+}
+
+.cm-lineNumbers {
+  font-size: calc(1em - 20%) !important;
+}
+
+.cm-line {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.cm-activeLine {
+  @apply rounded-none;
+}
+
+.sp-layout {
+  @apply flex flex-col sm:flex-row sm:divide-x-2 divide-gray-700 min-h-[200px] !important;
+}
+
+.sp-layout:not(.sandpack-preview) > .sp-stack:nth-child(1) {
+  min-width: 431px;
+  max-height: 40vh;
+}
+
+.sp-layout > .sp-stack:nth-child(2) {
+  min-width: 431px;
+  min-height: 40vh;
+  max-height: 40vh;
+}
+
+@media Screen and (min-width: 1200px) {
+  .sandpack-container {
+    width: calc(100% + 200px);
+    margin-left: -100px;
+    margin-right: -100px;
   }
-  body {
-    color: white;
-    background: black;
+
+  .sp-layout:not(.sandpack-preview) > .sp-stack:nth-child(1) {
+    height: auto;
+    min-height: unset;
+    max-height: 450px;
+  }
+
+  .sp-layout > .sp-stack:nth-child(2) {
+    height: auto;
+    min-height: unset;
+    min-height: 450px;
   }
 }
+
+@media not all and (min-resolution: 0.001dpcm) {
+  img[loading='lazy'] {
+    clip-path: inset(0.5px);
+  }
+}
+
+.prose .anchor {
+  @apply absolute invisible no-underline;
+
+  margin-left: -1em;
+  padding-right: 0.5em;
+  width: 80%;
+  max-width: 700px;
+  cursor: pointer;
+}
+
+.prose *:hover > .anchor {
+  @apply visible;
+}
+
+.prose a {
+  @apply transition-all;
+}
+
+.prose .anchor:after {
+  @apply text-gray-300 dark:text-gray-700;
+  content: '#';
+}
+

@@ -1,8 +1,15 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import '../styles/globals.css';
+import '@fontsource/nunito';
+import '@fontsource/nunito/700.css';
+import type { AppProps } from 'next/app';
+import BaseLayout from '~layouts/BaseLayout';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <BaseLayout>
+      <Component {...pageProps} />
+    </BaseLayout>
+  );
 }
 
-export default MyApp
+export default MyApp;
