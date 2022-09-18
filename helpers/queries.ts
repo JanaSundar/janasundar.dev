@@ -15,6 +15,7 @@ export interface PostWithFiles extends Post {
   files: {
     [x: string]: string;
   } | null;
+  updatedAt: string;
 }
 
 export interface PostWithDescription extends Post {
@@ -22,9 +23,9 @@ export interface PostWithDescription extends Post {
   createdAt: string;
 }
 
-export const getSinglePost = async (slug: string) => {
-  const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string);
+const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string);
 
+export const getSinglePost = async (slug: string) => {
   const query = gql`
     query Posts($slug: String!) {
       post(where: { slug: $slug }, ${process.env.NODE_ENV === 'production' ? 'stage: PUBLISHED' : 'stage: DRAFT'}) {
@@ -35,6 +36,7 @@ export const getSinglePost = async (slug: string) => {
         tags {
           tag
         }
+        updatedAt
       }
     }
   `;
@@ -70,7 +72,6 @@ export const getAllPosts = async (isLastFive = false) => {
 };
 
 export const getAllSlugs = async () => {
-  const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string);
   const query = gql`
     query AllSlug {
       posts(${process.env.NODE_ENV === 'production' ? 'stage: PUBLISHED' : 'stage: DRAFT'}) {
@@ -82,4 +83,29 @@ export const getAllSlugs = async () => {
   const { posts: Slugs }: { posts: [{ slug: string }] } = await client.request(query);
 
   return Slugs;
+};
+
+export const getAllSnippets = async () => {
+  const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string);
+
+  const query = gql`
+    query Snippets {
+      snippets(orderBy: createdAt_DESC, ${
+    process.env.NODE_ENV === 'production' ? 'stage: PUBLISHED' : 'stage: DRAFT'
+  }) {
+        slug
+        title
+        description
+        createdAt
+        content
+        tags {
+          tag
+        }
+      }
+    }
+  `;
+
+  const { posts }: { posts: [PostWithDescription] } = await client.request(query);
+
+  return posts;
 };

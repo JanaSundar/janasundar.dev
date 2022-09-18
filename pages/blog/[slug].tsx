@@ -11,6 +11,11 @@ import emoji from 'remark-emoji';
 import { CodeBlock, Link, Callout, Alert, Image } from '~components/MDX';
 import { rehypeMetaAttribute } from '~helpers/mdx';
 import { getAllSlugs, getSinglePost } from '~helpers/queries';
+import { format } from 'date-fns';
+import NextLink from 'next/link';
+import BackArrowIcon from '~components/SVG/BackArrowIcon';
+import WatchIcon from '~components/SVG/WatchIcon';
+import CalendarIcon from '~components/SVG/CalendarIcon';
 
 const Sandpack = dynamic(() => import('~components/MDX/Sandpack'), { ssr: false });
 
@@ -73,15 +78,34 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
       timeToRead,
       tags: post.tags,
       seo: { description: result.frontmatter.description, title: result.frontmatter.title, imageData },
+      updatedAt: post.updatedAt,
     },
     revalidate: 300,
   };
 };
 
-const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ code }) => {
+const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ updatedAt, timeToRead, seo, code }) => {
   const Component = useMemo(() => getMDXComponent(code), [code]);
   return (
-    <div className="prose prose-invert prose-xl prose-p:text-gray-400/90 py-4">
+    <div className="prose prose-invert prose-base w-full px-4 md:prose-xl mx-auto prose-p:text-gray-400/90 py-4">
+      <NextLink href="/blog" passHref>
+        <a className="flex items-center no-underline text-gray-500 group">
+          <BackArrowIcon className="group-hover:-translate-x-1 ease-linear duration-100" /> <span>back</span>
+        </a>
+      </NextLink>
+      <div className="not-prose py-8 space-y-6">
+        <h1 className="text-3xl sm:text-5xl font-sans font-bold">{seo.title}</h1>
+        <div className="text-gray-500 flex text-base items-center justify-start gap-2">
+          <p className="flex items-center gap-1">
+            <WatchIcon />
+            {timeToRead}
+          </p>
+          <p className="flex items-center gap-1">
+            <CalendarIcon />
+            {format(new Date(updatedAt), 'MMM dd, yyyy')}
+          </p>
+        </div>
+      </div>
       <Component
         components={{
           pre: CodeBlock as any,

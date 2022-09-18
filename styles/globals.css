@@ -7,8 +7,7 @@
 }
 
 * {
-  scroll-behavior: smooth;
-  @apply scroll-mt-8;
+  @apply scroll-smooth scroll-mt-24 break-words box-border;
 }
 
 @font-face {
@@ -17,6 +16,19 @@
   font-style: normal;
   font-display: optional;
   font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Wotfard';
+  src: local('Wotfard'), url('/fonts/wotfard-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+}
+
+/* overflow-x-hidden */
+#__next {
+  @apply flex flex-col min-h-[100vh] m-0 w-screen !important;
 }
 
 /* Code blur Effect */
@@ -42,6 +54,11 @@
 .prose h2,
 .prose h3 {
   @apply text-yellow-400 !important;
+}
+
+.slash > p:not(:last-child)::after {
+  content: '/';
+  @apply px-1
 }
 
 pre,
@@ -312,4 +329,3 @@ pre {
   @apply text-gray-300 dark:text-gray-700;
   content: '#';
 }
-

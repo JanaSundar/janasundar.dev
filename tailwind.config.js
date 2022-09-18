@@ -16,8 +16,9 @@ module.exports = {
   content: ['./components/**/*.{js,ts,jsx,tsx}', './layouts/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
-      sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+      sans: ['Wotfard', ...defaultTheme.fontFamily.sans],
       mono: ['MonoLisa', ...defaultTheme.fontFamily.mono],
+      poppins: ['Poppins'],
     },
     extend: {
       colors: {

@@ -1,12 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      require('./scripts/generateRSS');
+    }
+
+    return config;
+  },
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    images: {
-      allowFutureImage: true,
-    },
-  },
   images: {
     domains: ['media.graphcms.com', 'images.pexels.com'],
   },

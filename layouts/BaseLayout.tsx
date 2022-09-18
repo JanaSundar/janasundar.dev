@@ -1,5 +1,8 @@
 import type { FC } from 'react';
 import React from 'react';
+import Footer from '~components/Footer';
+import Navbar from '~components/Navbar';
+import { motion } from 'framer-motion';
 
 interface BaseLayoutProps {
   children: React.ReactNode;
@@ -8,9 +11,11 @@ interface BaseLayoutProps {
 const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
   return (
     <>
-      {/* <div className="pointer-events-none fixed inset-0 z-[-1] mix-blend-color-dodge nnnoise" />
-      <div className="pointer-events-none fixed inset-0 z-[-1] bg-center opacity-30 mix-blend-color-dodge ooorganize" /> */}
-      <main className="max-w-4xl mx-auto px-4">{children}</main>
+      <Navbar />
+      <motion.main layoutScroll className="max-w-4xl w-full mx-auto px-4 flex-1 flex flex-col">
+        {children}
+      </motion.main>
+      <Footer />
     </>
   );
 };
