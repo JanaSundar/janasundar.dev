@@ -1,6 +1,6 @@
 const fs = require('fs');
 const chrome = require('chrome-aws-lambda');
-const { chromium } = require('playwright-core');
+const puppeteer = require('puppeteer-core');
 const { getAllPosts } = require('./getPost');
 const { loadEnvConfig } = require('@next/env');
 
@@ -13,7 +13,7 @@ const exePath =
     : process.platform === 'linux'
     ? '/usr/bin/google-chrome'
     : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const baseUrl = isDev ? 'http://localhost:3001' : 'http://janasundar.dev';
+const baseUrl = isDev ? 'http://localhost:3001' : 'http://og-image.janasundar.dev';
 
 const getOptions = async () => {
   let options;
@@ -46,12 +46,12 @@ const getOptions = async () => {
     const imagePath = `${ogImageDir}/${post.slug}.png`;
     const options = await getOptions();
 
-    const browser = await chromium.launch({
+    const browser = await puppeteer.launch({
       ...options,
     });
     const page = await browser.newPage();
-    await page.setViewportSize({ width: 1200, height: 630 });
-    await page.goto(url, { waitUntil: 'networkidle' });
+    await page.setViewport({ width: 1200, height: 630 });
+    await page.goto(url, { waitUntil: 'networkidle2' });
     const buffer = await page.screenshot({ type: 'png' });
     await browser.close();
 
