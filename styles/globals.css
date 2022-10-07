@@ -50,15 +50,23 @@
   position: relative;
 }
 
+aside > p {
+  @apply text-white/80 !important;
+}
+
 .prose h1,
 .prose h2,
 .prose h3 {
   @apply text-yellow-400 !important;
 }
 
+figcaption {
+  @apply text-sm italic tracking-wider !important;
+}
+
 .slash > p:not(:last-child)::after {
   content: '/';
-  @apply px-1
+  @apply px-1;
 }
 
 pre,
@@ -97,11 +105,11 @@ pre[data-line-numbers='true'] [data-line-number]::before {
   position: sticky;
   text-align: right;
   width: 4rem;
-  @apply text-gray-500 bg-code;
+  @apply text-gray-400/90 bg-code;
 }
 
 .highlight-word {
-  @apply bg-highlight/30 rounded-sm px-1;
+  @apply bg-highlight/20 backdrop-blur-3xl rounded-md px-1;
 }
 
 .has-focus-lines:hover .token-line.highlight-line::before {

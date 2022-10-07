@@ -3,21 +3,37 @@ import { getMDXComponent } from 'mdx-bundler/client';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import dynamic from 'next/dynamic';
 import path from 'path';
-import React, { FC, useMemo } from 'react';
+import React, { FC, HTMLProps, useMemo } from 'react';
 import readingTime from 'reading-time';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import emoji from 'remark-emoji';
-import { CodeBlock, Link, Callout, Alert, Image } from '~components/MDX';
 import { rehypeMetaAttribute } from '~helpers/mdx';
 import { getAllSlugs, getSinglePost } from '~helpers/queries';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow, isEqual } from 'date-fns';
 import NextLink from 'next/link';
 import BackArrowIcon from '~components/SVG/BackArrowIcon';
 import WatchIcon from '~components/SVG/WatchIcon';
 import CalendarIcon from '~components/SVG/CalendarIcon';
+import Shareable from '~components/Shareable';
+import Newsletter from '~components/Newsletter';
+import ViewCounter from '~components/ViewCounter';
+import SEO from '~components/SEO';
 
 const Sandpack = dynamic(() => import('~components/MDX/Sandpack'), { ssr: false });
+const CodeBlock = dynamic(() => import('~components/MDX/CodeBlock'), { ssr: false });
+const Link = dynamic(() => import('~components/MDX/CustomLink'), { ssr: false });
+const Callout = dynamic(() => import('~components/MDX/Callout'), { ssr: false });
+const Alert = dynamic(() => import('~components/MDX/Alert'), { ssr: false });
+const Image = dynamic(() => import('~components/MDX/Image'), { ssr: false });
+const Code = dynamic(() => import('~components/MDX/Code'), { ssr: false });
+
+const Hr = (props: HTMLProps<HTMLHRElement>) => (
+  <hr
+    className="my-12 w-full border-none text-center h-10 before:content-['∿∿∿'] before:text-gray-100 before:text-2xl"
+    {...props}
+  ></hr>
+);
 
 export const getStaticPaths = async () => {
   const Slugs = await getAllSlugs();
@@ -41,8 +57,10 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   const post = await getSinglePost(slug as string);
 
+  const { content, ...rest } = post;
+
   const result = await bundleMDX({
-    source: post.content,
+    source: content,
     mdxOptions(options) {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
@@ -66,57 +84,71 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   const timeToRead = readingTime(post.content).text;
 
-  const imageData = {
-    title: post.title,
-    tags: timeToRead + ',' + post.tags.map(({ tag }) => tag).join(','),
-    slug: slug as string,
-  };
-
   return {
     props: {
       ...result,
       timeToRead,
-      tags: post.tags,
-      seo: { description: result.frontmatter.description, title: result.frontmatter.title, imageData },
-      updatedAt: post.updatedAt,
+      ...rest,
     },
     revalidate: 300,
   };
 };
 
-const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ updatedAt, timeToRead, seo, code }) => {
+const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  slug,
+  createdAt,
+  updatedAt,
+  timeToRead,
+  title,
+  code,
+}) => {
   const Component = useMemo(() => getMDXComponent(code), [code]);
+  const isUpdated = !isEqual(new Date(createdAt), new Date(updatedAt));
+
   return (
-    <div className="prose prose-invert prose-base w-full px-4 md:prose-xl mx-auto prose-p:text-gray-400/90 py-4">
-      <NextLink href="/blog" passHref>
-        <a className="flex items-center no-underline text-gray-500 group">
-          <BackArrowIcon className="group-hover:-translate-x-1 ease-linear duration-100" /> <span>back</span>
-        </a>
-      </NextLink>
-      <div className="not-prose py-8 space-y-6">
-        <h1 className="text-3xl sm:text-5xl font-sans font-bold">{seo.title}</h1>
-        <div className="text-gray-500 flex text-base items-center justify-start gap-2">
-          <p className="flex items-center gap-1">
-            <WatchIcon />
-            {timeToRead}
-          </p>
-          <p className="flex items-center gap-1">
-            <CalendarIcon />
-            {format(new Date(updatedAt), 'MMM dd, yyyy')}
-          </p>
+    <>
+      <SEO title={title} slug={slug} />
+      <div className="prose prose-invert prose-base w-full px-4 md:prose-xl mx-auto prose-p:text-gray-400/90 py-4">
+        <NextLink href="/blog" passHref>
+          <a className="flex items-center no-underline text-gray-500 group">
+            <BackArrowIcon className="group-hover:-translate-x-1 ease-linear duration-100" /> <span>back</span>
+          </a>
+        </NextLink>
+        <div className="not-prose py-8 space-y-6">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl font-sans font-bold">{title}</h1>
+          <div className="text-gray-500 flex text-base flex-wrap items-center justify-between gap-2">
+            <p className="flex items-center gap-1">
+              <CalendarIcon />
+              <span>{format(new Date(createdAt), 'MMM dd, yyyy')}</span>
+              {isUpdated ? (
+                <span className="hidden sm:block">( updated {formatDistanceToNow(new Date(updatedAt))} ago )</span>
+              ) : null}
+            </p>
+            <div className="flex gap-2 py-4 sm:py-0">
+              <p className="flex items-center gap-1">
+                <WatchIcon />
+                <span>{timeToRead}</span>
+              </p>
+              <ViewCounter slug={slug} />
+            </div>
+          </div>
         </div>
+        <Component
+          components={{
+            pre: CodeBlock as any,
+            code: Code as any,
+            a: Link,
+            Sandpack,
+            Callout,
+            Alert,
+            Image,
+            hr: (props) => <Hr {...props} />,
+          }}
+        />
       </div>
-      <Component
-        components={{
-          pre: CodeBlock as any,
-          a: Link,
-          Sandpack,
-          Callout,
-          Alert,
-          Image,
-        }}
-      />
-    </div>
+      <Shareable url={slug} title={title} />
+      <Newsletter />
+    </>
   );
 };
 

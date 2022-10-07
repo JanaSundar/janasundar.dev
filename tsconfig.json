@@ -23,9 +23,9 @@
       "~styles/*": ["styles/*"],
       "~helpers/*": ["helpers/*"],
       "~types/*": ["types/*"],
-      "~constants/*": ["constants/*"],
+      "~constants/*": ["constants/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/generateRSS.mjs"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

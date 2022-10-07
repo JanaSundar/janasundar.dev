@@ -60,7 +60,7 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, line, add, remove, showLineNu
             {tokens.map((line, i) => {
               const lineProps = getLineProps({ line, key: i });
               lineProps.className = clsx(lineProps.className, {
-                'line-focus highlight-line': !focusAll && linesToFocus.includes(i),
+                'line-focus highlight-line': !focusAll && linesToFocus.includes(i + 1),
                 'has-add-line': hasDiffLines && linesToAdd.includes(i),
                 'has-remove-line': hasDiffLines && linesToRemove.includes(i),
               });

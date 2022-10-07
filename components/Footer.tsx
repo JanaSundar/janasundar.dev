@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
 
-const links = {
+interface Links {
+  [x: string]: { name: string; route: string; isExternal: boolean }[];
+}
+
+const links: Links = {
   pages: [
     {
       name: 'Home',
@@ -13,11 +17,11 @@ const links = {
       route: '/blog',
       isExternal: false,
     },
-    {
-      name: 'Snippets',
-      route: '/snippets',
-      isExternal: false,
-    },
+    // {
+    //   name: 'Snippets',
+    //   route: '/snippets',
+    //   isExternal: false,
+    // },
   ],
   social: [
     {
@@ -57,14 +61,17 @@ const links = {
 
 const Footer = () => {
   return (
-    <div className="shadow mt-8 p-8 border-t-[1px] border-gray-700/20 text-gray-500">
+    <div className="shadow mt-8 p-8 border-t-[1px] border-gray-700/20 text-gray-400/90">
       <div className="max-w-4xl mx-auto w-full ">
-        <div className="grid grid-cols-3 gap-5">
-          {Object.values(links).map((val, index) => (
-            <div key={index} className="flex flex-col">
-              {val.map((v) => (
-                <Link key={v.route} passHref href={v.route}>
-                  <a {...(v.isExternal ? { target: '_blank' } : {})} className="py-1 hover:text-gray-300">
+        <div className="grid grid-cols-3 text-sm xs:text-base gap-5">
+          {Object.keys(links).map((key) => (
+            <div key={key} className="flex flex-col">
+              {links[key].map((v) => (
+                <Link key={v.route} href={v.route} passHref>
+                  <a
+                    className="py-1 hover:text-gray-100"
+                    {...(v.isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
                     {v.name}
                   </a>
                 </Link>

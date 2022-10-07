@@ -15,6 +15,10 @@ root.render(
 `;
 
 const StylesCss = `
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   font-family: sans-serif;
   -webkit-font-smoothing: auto;

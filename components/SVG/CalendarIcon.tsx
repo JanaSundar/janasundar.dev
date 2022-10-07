@@ -2,24 +2,23 @@ import React from 'react';
 
 function CalendarIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      viewBox="0 0 24 24"
-    >
-      <path stroke="none" d="M0 0h24v24H0z"></path>
-      <rect width="16" height="16" x="4" y="5" rx="2"></rect>
-      <path d="M16 3L16 7"></path>
-      <path d="M8 3L8 7"></path>
-      <path d="M4 11L20 11"></path>
-      <path d="M11 15L12 15"></path>
-      <path d="M12 15L12 18"></path>
+    <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M8 2v3M16 2v3M3.5 9.09h17M21 8.5V17c0 3-1.5 5-5 5H8c-3.5 0-5-2-5-5V8.5c0-3 1.5-5 5-5h8c3.5 0 5 2 5 5Z"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeMiterlimit={10}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15.695 13.7h.009M15.695 16.7h.009M11.995 13.7h.01M11.995 16.7h.01M8.294 13.7h.01M8.294 16.7h.01"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+ 
     </svg>
   );
 }

@@ -1,15 +1,30 @@
 import React from 'react';
+import { SVGProps } from 'react';
 
-function WatchIcon() {
+function WatchIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="currentColor"
-    >
-      <path d="M13 8h-2v5h5v-2h-3z"></path>
-      <path d="M19.999 12c0-2.953-1.612-5.53-3.999-6.916V3a1 1 0 00-1-1H9a1 1 0 00-1 1v2.083C5.613 6.469 4.001 9.047 4.001 12a8.003 8.003 0 004.136 7H8v2.041a1 1 0 001 1h6a1 1 0 001-1V19h-.139a8 8 0 004.138-7zm-8 5.999A6.005 6.005 0 016.001 12a6.005 6.005 0 015.998-5.999c3.31 0 6 2.691 6 5.999a6.005 6.005 0 01-6 5.999z"></path>
+    <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path
+        d="M12 9.66v2.79l1.4 1.4"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.5 12a6.5 6.5 0 1 1 13 0c0 2.08-.98 3.94-2.5 5.13h-.01c-1.1.86-2.48 1.37-3.99 1.37-1.49 0-2.86-.5-3.96-1.35h-.01A6.486 6.486 0 0 1 5.5 12Z"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.03 17.15h.01c1.1.85 2.47 1.35 3.96 1.35 1.51 0 2.89-.51 3.99-1.37H16l-.51 2.47C15 21.5 13.9 22 12.55 22h-1.09c-1.35 0-2.46-.5-2.94-2.41l-.49-2.44ZM8.03 6.85h.01C9.14 6 10.51 5.5 12 5.5c1.51 0 2.89.51 3.99 1.37H16l-.51-2.47C15 2.5 13.9 2 12.55 2h-1.09C10.11 2 9 2.5 8.52 4.41l-.49 2.44Z"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

@@ -2,7 +2,7 @@ import { getAllPosts } from '~helpers/queries';
 import { InferGetStaticPropsType } from 'next';
 import React, { FC, useMemo, useState } from 'react';
 import Post from '~components/Post';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Fragment } from 'react';
 
 export const getStaticProps = async () => {
@@ -31,10 +31,10 @@ const Posts: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ posts }) =>
           type="text"
           onChange={(e) => setSearchValue(e.target.value)}
           placeholder="Search articles"
-          className="block w-full px-4 py-2 text-gray-100 bg-gray-700 border rounded-md border-gray-900 focus:outline-none"
+          className="block w-full px-4 py-2 text-gray-800 bg-white border rounded-md border-gray-900 focus:outline-none"
         />
         <svg
-          className="absolute w-5 h-5 right-3 top-3 text-gray-300"
+          className="absolute w-5 h-5 right-3 top-3 text-gray-400"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -48,26 +48,25 @@ const Posts: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ posts }) =>
           />
         </svg>
       </div>
-      <AnimatePresence initial={false} mode="popLayout">
-        {filteredpost.map(({ title, description, createdAt, slug }) => {
-          const currentYear = new Date(createdAt).getFullYear();
-          let printYear: boolean;
+      {filteredpost.map(({ title, description, createdAt, slug }) => {
+        const currentYear = new Date(createdAt).getFullYear();
+        let printYear: boolean;
 
-          if (currentYear !== year) {
-            printYear = true;
-            year = currentYear;
-          } else {
-            printYear = false;
-          }
+        if (currentYear !== year) {
+          printYear = true;
+          year = currentYear;
+        } else {
+          printYear = false;
+        }
 
-          return (
-            <Fragment key={slug}>
-              {printYear && <h1 className="text-xl font-mono pb-4">{currentYear}</h1>}
-              <Post key={title} {...{ title, description, date: createdAt, showDescription: true, slug }} />
-            </Fragment>
-          );
-        })}
-      </AnimatePresence>
+        return (
+          <Fragment key={slug}>
+            {printYear && <h1 className="text-xl font-mono pb-4">{currentYear}</h1>}
+            <Post key={title} {...{ title, description, date: createdAt, showDescription: true, slug }} />
+          </Fragment>
+        );
+      })}
+      {filteredpost.length === 0 && <p className="text-xl py-4 text-gray-400/90">No post found</p>}
     </motion.div>
   );
 };

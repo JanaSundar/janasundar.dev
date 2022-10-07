@@ -5,12 +5,21 @@ import '@fontsource/poppins/700.css';
 import '@fontsource/poppins';
 import type { AppProps } from 'next/app';
 import BaseLayout from '~layouts/BaseLayout';
+import { DefaultSeo } from 'next-seo';
+import SEO from '../next-seo.config';
+import useAnalytics from '~hooks/useAnalytics';
+import { Toaster } from 'react-hot-toast';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useAnalytics();
   return (
-    <BaseLayout>
-      <Component {...pageProps} />
-    </BaseLayout>
+    <>
+      <DefaultSeo {...SEO} />
+      <BaseLayout>
+        <Component {...pageProps} />
+      </BaseLayout>
+      <Toaster position="top-right" gutter={4} />
+    </>
   );
 }
 

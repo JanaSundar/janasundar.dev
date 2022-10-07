@@ -38,7 +38,7 @@ const LayoutVariant: Variants = {
 const Sandpack: FC<SandpackProps> = ({
   files,
   template = 'react',
-  dependencies,
+  dependencies = {},
   previewStyles,
   previewOnly = false,
 }) => {
@@ -63,9 +63,10 @@ const Sandpack: FC<SandpackProps> = ({
       }}
       options={{
         autorun: true,
+        externalResources: ['https://unpkg.com/@tailwindcss/ui/dist/tailwind-ui.min.css'],
       }}
       customSetup={{
-        dependencies: dependencies || {},
+        dependencies,
       }}
     >
       <motion.div

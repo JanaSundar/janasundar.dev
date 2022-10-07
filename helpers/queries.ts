@@ -9,6 +9,7 @@ export interface Post {
   title: string;
   tags: Tags[];
   content: string;
+  createdAt: string
 }
 
 export interface PostWithFiles extends Post {
@@ -20,7 +21,6 @@ export interface PostWithFiles extends Post {
 
 export interface PostWithDescription extends Post {
   description: string;
-  createdAt: string;
 }
 
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string);
@@ -37,6 +37,7 @@ export const getSinglePost = async (slug: string) => {
           tag
         }
         updatedAt
+        createdAt
       }
     }
   `;

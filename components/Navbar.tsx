@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
+import Logo from './SVG/Logo';
 
 interface NavLinkProps {
   children: React.ReactNode;
@@ -12,34 +13,34 @@ const NavLink: FC<NavLinkProps> = ({ path, children }) => {
   const { asPath } = useRouter();
   const isActive = asPath === path;
   return (
-    <motion.li
-      className={`relative font-bold`}
-      layout
-    >
+    <li className={`relative font-bold`}>
       <Link href={path} passHref>
-        <a className="text-sm sm:text-base">{children}</a>
+        <motion.a
+          className="text-sm sm:text-base text-gray-400/90"
+          animate={{
+            color: isActive ? '#ffffff' : '#9ca3b0e6',
+          }}
+        >
+          {children}
+        </motion.a>
       </Link>
-      {isActive ? (
-        <motion.div
-          className="bg-white border-[1px] absolute bottom-0 left-0 right-0 rounded-full"
-          layoutId="underline"
-        />
-      ) : null}
-    </motion.li>
+    </li>
   );
 };
 
 const Navbar = () => {
   return (
-    <nav className="bg-primary/10 z-50 backdrop-blur-3xl font-poppins">
+    <nav className="bg-primary/10 z-50 sticky top-0 backdrop-blur-3xl font-poppins">
       <div className="max-w-4xl min-h-[70px] text-base items-center mx-auto flex px-4 flex-row justify-between">
         <Link href="/" passHref>
-          <a className="font-bold text-lg">Jana</a>
+          <a className="font-bold text-lg">
+            <Logo />
+          </a>
         </Link>
         <ul className="flex gap-4">
           <NavLink path="/">Home</NavLink>
           <NavLink path="/blog">Blog</NavLink>
-          <NavLink path="/snippets">Snippets</NavLink>
+          {/* <NavLink path="/snippets">Snippets</NavLink> */}
         </ul>
       </div>
     </nav>

@@ -9,6 +9,7 @@ const TwitterIcon = (props: SVGProps<SVGSVGElement>) => (
     strokeWidth={1.5}
     stroke="currentColor"
     fill="none"
+    viewBox="0 0 24 24"
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}

@@ -1,20 +1,12 @@
-const plugin = require('tailwindcss/plugin');
 const defaultTheme = require('tailwindcss/defaultTheme');
-
-const patterns = plugin(({ addUtilities }) => {
-  addUtilities({
-    '.nnnoise': {
-      backgroundImage: "url('/images/nnnoise.svg')",
-    },
-    '.ooorganize': {
-      backgroundImage: "url('/images/ooorganize.svg')",
-    },
-  });
-});
 
 module.exports = {
   content: ['./components/**/*.{js,ts,jsx,tsx}', './layouts/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      xs: '475px',
+      ...defaultTheme.screens,
+    },
     fontFamily: {
       sans: ['Wotfard', ...defaultTheme.fontFamily.sans],
       mono: ['MonoLisa', ...defaultTheme.fontFamily.mono],
@@ -29,5 +21,5 @@ module.exports = {
       },
     },
   },
-  plugins: [patterns, require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography')],
 };

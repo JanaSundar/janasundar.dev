@@ -1,16 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      require('./scripts/generateRSS');
-    }
-
-    return config;
-  },
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['media.graphcms.com', 'images.pexels.com'],
+    domains: ['media.graphcms.com', 'images.pexels.com', 'media.graphassets.com'],
   },
   async headers() {
     return [
@@ -65,12 +57,6 @@ const securityHeaders = [
   {
     key: 'Strict-Transport-Security',
     value: 'max-age=31536000; includeSubDomains; preload',
-  },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
-  // Opt-out of Google FLoC: https://amifloced.org/
-  {
-    key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
   },
 ];
 
