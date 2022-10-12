@@ -52,6 +52,7 @@ const Sandpack: FC<SandpackProps> = ({
     vue3: '',
     svelte: '',
     solid: '',
+    'test-ts': '',
   };
 
   return (

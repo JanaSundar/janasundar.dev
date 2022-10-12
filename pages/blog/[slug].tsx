@@ -107,7 +107,7 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <>
-      <SEO title={title} slug={slug} />
+      <SEO title={title} />
       <div className="prose prose-invert prose-base w-full px-4 md:prose-xl mx-auto prose-p:text-gray-400/90 py-4">
         <NextLink href="/blog" passHref>
           <a className="flex items-center no-underline text-gray-500 group">
