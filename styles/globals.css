@@ -4,10 +4,29 @@
 
 :root {
   color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+  font-feature-settings: 'cv01', 'cv10';
+  font-variation-settings: 'opsz' 16;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+  text-size-adjust: none;
+}
+
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(to bottom, black var(--header-height), transparent);
+  mask-image: linear-gradient(to bottom, black var(--header-height), transparent);
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  font-variation-settings: 'opsz' 32;
 }
 
 * {
-  @apply scroll-smooth scroll-mt-24 break-words box-border;
+  @apply scroll-smooth scroll-mt-24 break-words box-border !important;
 }
 
 @font-face {
@@ -105,11 +124,11 @@ pre[data-line-numbers='true'] [data-line-number]::before {
   position: sticky;
   text-align: right;
   width: 4rem;
-  @apply text-gray-400/90 bg-code;
+  @apply text-gray-400/90 bg-code z-10;
 }
 
 .highlight-word {
-  @apply bg-highlight/20 backdrop-blur-3xl rounded-md px-1;
+  @apply bg-highlight/20 backdrop-blur-3xl rounded-md px-1 ;
 }
 
 .has-focus-lines:hover .token-line.highlight-line::before {
@@ -139,6 +158,7 @@ pre[data-line-numbers='true'] .token-line.highlight-line::after,
   top: 0;
   right: 0;
   width: 100%;
+  z-index: 10;
 }
 
 .prose pre:not([data-lang='bash'])::after {
@@ -150,7 +170,7 @@ pre[data-line-numbers='true'] .token-line.highlight-line::after,
   position: sticky;
   right: 0px;
   text-align: right;
-  transform: translate(-5px, 10px);
+  transform: translate(-5px, 20px);
   width: 200px;
   margin-left: -200px;
 }

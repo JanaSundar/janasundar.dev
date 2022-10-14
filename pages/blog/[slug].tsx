@@ -108,9 +108,9 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <>
       <SEO title={title} />
-      <div className="prose prose-invert prose-base w-full px-4 md:prose-xl mx-auto prose-p:text-gray-400/90 py-4">
+      <div className="prose prose-invert prose-base w-full px-4 md:prose-xl md:prose-p:text-lg md:prose-li:text-lg prose-p:leading-relaxed md:prose-p:leading-8 prose-pre:text-base md:prose-pre:text-lg mx-auto prose-p:tracking-wide md:prose-p:tracking-wider prose-p:text-gray-400/90 py-4">
         <NextLink href="/blog" passHref>
-          <a className="flex items-center no-underline text-gray-500 group">
+          <a className="flex items-center no-underline group text-base tracking-wider font-bold text-link">
             <BackArrowIcon className="group-hover:-translate-x-1 ease-linear duration-100" /> <span>back</span>
           </a>
         </NextLink>
@@ -133,18 +133,20 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             </div>
           </div>
         </div>
-        <Component
-          components={{
-            pre: CodeBlock as any,
-            code: Code as any,
-            a: Link,
-            Sandpack,
-            Callout,
-            Alert,
-            Image,
-            hr: (props) => <Hr {...props} />,
-          }}
-        />
+        <article>
+          <Component
+            components={{
+              pre: CodeBlock as any,
+              code: Code as any,
+              a: Link,
+              Sandpack,
+              Callout,
+              Alert,
+              Image,
+              hr: (props) => <Hr {...props} />,
+            }}
+          />
+        </article>
       </div>
       <Shareable url={slug} title={title} />
       <Newsletter />

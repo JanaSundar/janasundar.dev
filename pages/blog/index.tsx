@@ -61,7 +61,7 @@ const Posts: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ posts }) =>
 
         return (
           <Fragment key={slug}>
-            {printYear && <h1 className="text-xl font-mono pb-4">{currentYear}</h1>}
+            {printYear && <h1 className="text-xl pb-4">{currentYear}</h1>}
             <Post key={title} {...{ title, description, date: createdAt, showDescription: true, slug }} />
           </Fragment>
         );

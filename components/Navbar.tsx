@@ -16,7 +16,7 @@ const NavLink: FC<NavLinkProps> = ({ path, children }) => {
     <li className={`relative font-bold`}>
       <Link href={path} passHref>
         <motion.a
-          className="text-sm sm:text-base text-gray-400/90"
+          className="text-sm sm:text-base"
           animate={{
             color: isActive ? '#ffffff' : '#9ca3b0e6',
           }}
@@ -30,7 +30,7 @@ const NavLink: FC<NavLinkProps> = ({ path, children }) => {
 
 const Navbar = () => {
   return (
-    <nav className="bg-primary/10 z-50 sticky top-0 backdrop-blur-3xl font-poppins">
+    <nav className="bg-primary/10 z-50 sticky top-0 navbar">
       <div className="max-w-4xl min-h-[70px] text-base items-center mx-auto flex px-4 flex-row justify-between">
         <Link href="/" passHref>
           <a className="font-bold text-lg">

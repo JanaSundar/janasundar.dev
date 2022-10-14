@@ -8,14 +8,13 @@ module.exports = {
       ...defaultTheme.screens,
     },
     fontFamily: {
-      sans: ['Wotfard', ...defaultTheme.fontFamily.sans],
+      sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
       mono: ['MonoLisa', ...defaultTheme.fontFamily.mono],
-      poppins: ['Poppins'],
     },
     extend: {
       colors: {
         highlight: 'hsl(276, 68%, 75%)',
-        primary: '#121212',
+        primary: '#000212',
         code: '#0e141a',
         link: '#617bff',
       },

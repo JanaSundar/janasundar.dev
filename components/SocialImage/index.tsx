@@ -17,10 +17,10 @@ const SocialImage: FC<Props> = ({ background, color, title }) => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        backgroundColor: background ?? '#000',
+        backgroundColor: background ?? '#000212',
         fontSize: 60,
         fontWeight: 'bold',
-        fontFamily: '"Poppins"',
+        fontFamily: '"Inter"',
         position: 'relative',
       }}
     >

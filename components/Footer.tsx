@@ -61,9 +61,9 @@ const links: Links = {
 
 const Footer = () => {
   return (
-    <div className="shadow mt-8 p-8 border-t-[1px] border-gray-700/20 text-gray-400/90">
+    <div className="shadow mt-8 p-8 border-t-[1px] border-gray-700/40 text-gray-400/90">
       <div className="max-w-4xl mx-auto w-full ">
-        <div className="grid grid-cols-3 text-sm xs:text-base gap-5">
+        <div className="grid grid-cols-3 justify-items-center text-sm xs:text-base gap-5">
           {Object.keys(links).map((key) => (
             <div key={key} className="flex flex-col">
               {links[key].map((v) => (

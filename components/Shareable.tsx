@@ -23,9 +23,7 @@ const Shareable: FC<ShareableProps> = ({ url, title }) => {
   return (
     <>
       <div className="flex gap-4 flex-col items-center w-full mt-4 p-4 rounded-md justify-center">
-        <p className="text-base text-center sm:text-xl font-bold ">
-          Enjoyed the article? Consider sharing on{' '}
-        </p>
+        <p className="text-base text-center tracking-wide font-bold text-gray-500/90">Share this post</p>
         <div className="flex gap-4 items-center">
           <a
             href={`https://twitter.com/intent/tweet?url=${url}&via=jana__sundar&text=${title}`}
@@ -34,7 +32,7 @@ const Shareable: FC<ShareableProps> = ({ url, title }) => {
             rel="noopener noreferrer"
             title="Share on twitter"
           >
-            <TwitterIcon width={22} height={22} />
+            <TwitterIcon width={22} height={22} stroke="white" />
           </a>
           <a
             href={`https://www.linkedin.com/sharing/share-offsite/?url=${url}`}
@@ -43,10 +41,10 @@ const Shareable: FC<ShareableProps> = ({ url, title }) => {
             rel="noopener noreferrer"
             title="Share on linkedin"
           >
-            <LinkedInIcon width={22} height={22} />
+            <LinkedInIcon width={22} height={22} stroke="white" />
           </a>
           <button onClick={onCopy} className={className} title="copy on clipboard">
-            <ShareIcon width={22} height={22} />
+            <ShareIcon width={22} height={22} stroke="white" />
           </button>
         </div>
       </div>

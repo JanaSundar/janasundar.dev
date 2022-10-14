@@ -1,7 +1,7 @@
 const title = 'Janarthanan\'s Personal Site';
 const description =
-  'Developer and Javascript enthusiast from India interested in React, Node, Jamstack, Typescript and Music.';
-
+  'Developer and Javascript enthusiast from India interested in React, Node, Jamstack, Typescript.';
+/**  @type {import('next-seo').DefaultSeoProps} */
 const SEO = {
   title,
   description,

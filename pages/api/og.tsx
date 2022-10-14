@@ -6,7 +6,7 @@ export const config = {
   runtime: 'experimental-edge',
 };
 
-const font = fetch(new URL('../../fonts/Poppins-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
+const font = fetch(new URL('../../fonts/Inter-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
 
 export default async function handler(req: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export default async function handler(req: NextRequest) {
       height: 630,
       fonts: [
         {
-          name: 'Poppins',
+          name: 'Inter',
           data: fontData,
           style: 'normal',
         },

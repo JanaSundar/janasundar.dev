@@ -35,5 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 rss.xml
-sitemap.xml
 og/
+sitemap*.xml
+robots.txt
