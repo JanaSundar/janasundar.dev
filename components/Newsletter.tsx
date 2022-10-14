@@ -51,7 +51,7 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="p-12 text-center border-t-[1px] border-gray-700/40 mt-12 space-y-2">
+    <div className="p-4 sm:p-12 text-center border-t-[1px] border-gray-700/40 mt-12 space-y-2">
       <h1 className="text-white font-bold text-xl sm:text-2xl tracking-wide">Subscribe to my newsletter</h1>
       <p className="text-gray-400/90 ">Get emails about web development, javascript and books to your inbox.</p>
       <form className="my-4 py-2 flex justify-center gap-4 flex-wrap" onSubmit={subscribe}>
@@ -64,7 +64,7 @@ const Newsletter = () => {
           required
           className="max-w-[400px] w-full rounded-md shadow bg-gray-100 text-gray-800 py-2 px-4 focus:outline-none"
         />
-        <button className="bg-link font-bold px-4 w-[120px] py-2 rounded-md shadow" type="submit">
+        <button className="bg-link/70 font-bold px-4 w-[120px] py-2 rounded-md shadow" type="submit">
           {isFormLoading ? <LoadingSpinner /> : 'Subscribe'}
         </button>
       </form>

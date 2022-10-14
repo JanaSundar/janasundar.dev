@@ -33,7 +33,7 @@ const Navbar = () => {
     <nav className="bg-primary/10 z-50 sticky top-0 navbar">
       <div className="max-w-4xl min-h-[70px] text-base items-center mx-auto flex px-4 flex-row justify-between">
         <Link href="/" passHref>
-          <a className="font-bold text-lg">
+          <a className="font-bold text-lg" aria-label="Logo">
             <Logo />
           </a>
         </Link>

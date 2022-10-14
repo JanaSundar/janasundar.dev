@@ -53,7 +53,7 @@ export default function Spotify() {
           !data?.isPlaying && (
             <div className="flex flex-col items-center justify-center">
               <h2 className="text-xl font-bold">Nothing...</h2>
-              <p>Do you know a good song I should listen to?</p>
+              <p className="text-center">Do you know a good song I should listen to?</p>
               <a
                 className="px-8 py-2 mt-4 text-sm text-center text-white transition-colors border rounded-md font-bold hover:border-white hover:bg-white hover:text-gray-700"
                 href="https://twitter.com/messages/compose?recipient_id=1145645832999301120&text=Hey Jana, you should listen to:"

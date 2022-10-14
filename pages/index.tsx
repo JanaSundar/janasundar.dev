@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import GithubIcon from '~components/SVG/GithubIcon';
 import TwitterIcon from '~components/SVG/TwitterIcon';
 import { motion, Variants } from 'framer-motion';
@@ -52,6 +52,10 @@ const variants: Variants = {
   },
 };
 
+const Paragragh: FC<{ children: ReactNode }> = ({ children }) => {
+  return <p className="pb-4 leading-relaxed md:leading-8 md:text-lg tracking-wide md:tracking-wider">{children}</p>;
+};
+
 const Home = () => {
   return (
     <>
@@ -85,34 +89,29 @@ const Home = () => {
           </motion.div>
         </motion.div>
       </section>
-      <section
-        id="about"
-        className="pt-20 sm:pt-36 flex justify-center flex-col text-base tracking-wider text-gray-400/90"
-      >
+      <section id="about" className="pt-20 sm:pt-36 flex justify-center flex-col text-base text-gray-400/90">
         <h1 className="uppercase pb-4 tracking-wide font-bold">about me</h1>
-        <p className="pb-4 leading-relaxed">
+        <Paragragh>
           I'm a software Engineer from India. A javascript enthusiast and blogger specialising in full-stack
           development.
-        </p>
-        <p className="pb-4 leading-relaxed">
+        </Paragragh>
+        <Paragragh>
           Happy to be part of the Gifta developer team at{' '}
           <a href="https://cimpress.com/" className="text-white font-bold hover:underline underline-offset-4">
             Cimpress
           </a>
           , a B2C e-commerce platform where I helped integrate designer experience(DEX) package with the website and
           developed full-stack microservices.
-        </p>
-        <p className="pb-4 leading-relaxed">
+        </Paragragh>
+        <Paragragh>
           Before Cimpress, I worked as a Programmer Analyst at{' '}
           <a href="https://www.cognizant.com/in/en" className="text-white font-bold hover:underline underline-offset-4">
             Cognizant
           </a>
           . I was part of the R&D team, where I created and managed multiple POC websites and mobile apps and helped
           create reusable components.
-        </p>
-        <p className="pb-4 leading-relaxed">
-          Outside of technology, I love spending time with my family and watching movies.
-        </p>
+        </Paragragh>
+        <Paragragh>Outside of technology, I love spending time with my family and watching movies.</Paragragh>
         <Link href="/resume.pdf" passHref>
           <a
             className="border rounded-md px-4 py-2 mt-4 bg-white text-primary font-bold flex w-fit gap-2 items-center shadow"
@@ -125,19 +124,19 @@ const Home = () => {
       </section>
       <section
         id="work"
-        className="pt-20 sm:pt-36 flex justify-center flex-col text-base tracking-wider text-gray-400/90"
+        className="pt-20 sm:pt-36 flex justify-center flex-col text-base tracking-wide md:tracking-wider text-gray-400/90"
       >
         <h1 className="uppercase pb-4 tracking-wide font-bold">work</h1>
         <div className="pb-4 leading-relaxed">
           <h1 className="pb-2 uppercase text-white font-bold">Cimpress</h1>
-          <div className="flex pb-2 justify-between">
+          <div className="flex pb-2 justify-between md:text-lg ">
             <p>Software Engineer</p>
             <p>05/2021 - Current</p>
           </div>
         </div>
         <div className="pb-4 leading-relaxed">
           <h1 className="pb-2 uppercase text-white font-bold">Cognizant</h1>
-          <div className="flex justify-between pb-2">
+          <div className="flex justify-between pb-2 md:text-lg ">
             <p>Programmer Analyst</p>
             <p>07/2019 - 04/2021</p>
           </div>
