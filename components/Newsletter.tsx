@@ -62,7 +62,7 @@ const Newsletter = () => {
           type="email"
           autoComplete="email"
           required
-          className="max-w-[400px] w-full rounded-md shadow bg-gray-100 text-gray-800 py-2 px-4 focus:outline-none"
+          className="max-w-[400px] w-full rounded-md shadow bg-gray-800 text-white py-2 px-4 focus:outline-none"
         />
         <button className="bg-link/70 font-bold px-4 w-[120px] py-2 rounded-md shadow" type="submit">
           {isFormLoading ? <LoadingSpinner /> : 'Subscribe'}

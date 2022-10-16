@@ -89,7 +89,7 @@ const Home = () => {
         </motion.div>
       </section>
       <section id="about" className="pt-20 sm:pt-36 flex justify-center flex-col text-base text-gray-400/90">
-        <h1 className="uppercase pb-4 tracking-wide font-bold">about me</h1>
+        <h1 className="uppercase pb-4 tracking-wide font-bold text-gray-300/90">about me</h1>
         <Paragragh>
           I'm a software Engineer from India. A javascript enthusiast and blogger specialising in full-stack
           development.
@@ -125,7 +125,7 @@ const Home = () => {
         id="work"
         className="pt-20 sm:pt-36 flex justify-center flex-col text-base tracking-wide md:tracking-wider text-gray-400/90"
       >
-        <h1 className="uppercase pb-4 tracking-wide font-bold">work</h1>
+        <h1 className="uppercase pb-4 tracking-wide font-bold text-gray-300/90">work</h1>
         <div className="pb-4 leading-relaxed">
           <h1 className="pb-2 uppercase text-white font-bold">Cimpress</h1>
           <div className="flex pb-2 justify-between md:text-lg ">
