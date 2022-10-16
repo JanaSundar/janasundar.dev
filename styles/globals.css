@@ -68,7 +68,7 @@ aside > p {
 .prose h1,
 .prose h2,
 .prose h3 {
-  @apply text-yellow-400 !important;
+  @apply text-yellow-500/90 !important;
 }
 
 figcaption {
