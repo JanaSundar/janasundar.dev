@@ -14,7 +14,7 @@ const SEO = {
     description,
     images: [
       {
-        url: 'https://janasundar.dev/images/default.png',
+        url: '/images/default.png',
         alt: title,
         width: 1200,
         height: 630,

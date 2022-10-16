@@ -9,7 +9,8 @@ export interface Post {
   title: string;
   tags: Tags[];
   content: string;
-  createdAt: string
+  createdAt: string;
+  description: string;
 }
 
 export interface PostWithFiles extends Post {
@@ -17,10 +18,6 @@ export interface PostWithFiles extends Post {
     [x: string]: string;
   } | null;
   updatedAt: string;
-}
-
-export interface PostWithDescription extends Post {
-  description: string;
 }
 
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string);
@@ -31,6 +28,7 @@ export const getSinglePost = async (slug: string) => {
       post(where: { slug: $slug }, ${process.env.NODE_ENV === 'production' ? 'stage: PUBLISHED' : 'stage: DRAFT'}) {
         title
         content
+        description
         files
         slug
         tags {
@@ -67,7 +65,7 @@ export const getAllPosts = async (isLastFive = false) => {
     }
   `;
 
-  const { posts }: { posts: [PostWithDescription] } = await client.request(query);
+  const { posts }: { posts: [Post] } = await client.request(query);
 
   return posts;
 };
@@ -106,7 +104,7 @@ export const getAllSnippets = async () => {
     }
   `;
 
-  const { posts }: { posts: [PostWithDescription] } = await client.request(query);
+  const { posts }: { posts: [Post] } = await client.request(query);
 
   return posts;
 };

@@ -5,17 +5,19 @@ import { useRouter } from 'next/router';
 
 interface SEOProps {
   title: string;
+  description: string;
 }
 
-export default function SEO({ title, ...rest }: SEOProps) {
+export default function SEO({ title, description, ...rest }: SEOProps) {
   const router = useRouter();
 
   const openGraph: OpenGraph = React.useMemo(
     () => ({
       url: `https://janasundar.dev/api/og/?title={title}`,
       title: `${title} - Janarthanan`,
+      description,
     }),
-    [title]
+    [title, description]
   );
 
   return (

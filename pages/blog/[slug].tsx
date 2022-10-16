@@ -101,13 +101,14 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   timeToRead,
   title,
   code,
+  description
 }) => {
   const Component = useMemo(() => getMDXComponent(code), [code]);
   const isUpdated = !isEqual(new Date(createdAt), new Date(updatedAt));
 
   return (
     <>
-      <SEO title={title} />
+      <SEO title={title} description={description} />
       <div className="prose prose-invert prose-base w-full px-4 md:prose-xl md:prose-p:text-lg md:prose-li:text-lg prose-p:leading-relaxed md:prose-p:leading-8 prose-pre:text-base md:prose-pre:text-lg mx-auto prose-p:tracking-wide md:prose-p:tracking-wider prose-p:text-gray-400/90 py-4">
         <NextLink href="/blog" passHref>
           <a className="flex items-center no-underline group text-base tracking-wider font-bold text-link">

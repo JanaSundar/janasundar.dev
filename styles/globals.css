@@ -37,14 +37,6 @@ body {
   font-weight: 400;
 }
 
-@font-face {
-  font-family: 'Wotfard';
-  src: local('Wotfard'), url('/fonts/wotfard-regular.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400;
-  font-display: fallback;
-}
-
 /* overflow-x-hidden */
 #__next {
   @apply flex flex-col min-h-[100vh] m-0 w-screen !important;
