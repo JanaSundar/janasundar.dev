@@ -3,7 +3,6 @@ import GithubIcon from '~components/SVG/GithubIcon';
 import TwitterIcon from '~components/SVG/TwitterIcon';
 import { motion, Variants } from 'framer-motion';
 import LinkedInIcon from '~components/SVG/LinkedInIcon';
-import Spotify from '~components/Spotify';
 import Newsletter from '~components/Newsletter';
 import Link from 'next/link';
 import DownloadIcon from '~components/SVG/DownloadIcon';
@@ -143,7 +142,6 @@ const Home = () => {
         </div>
       </section>
       <Newsletter />
-      <Spotify />
     </>
   );
 };
