@@ -13,6 +13,7 @@ export default function SEO({ title, description, ...rest }: SEOProps) {
   return (
     <NextSeo
       title={`${title} - Janarthanan`}
+      description={description}
       canonical={`https://janasundar.dev${router.asPath}`}
       openGraph={{
         images: [
