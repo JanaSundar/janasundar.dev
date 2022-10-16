@@ -15,7 +15,14 @@ export default function SEO({ title, description, ...rest }: SEOProps) {
       title={`${title} - Janarthanan`}
       canonical={`https://janasundar.dev${router.asPath}`}
       openGraph={{
-        url: `https://janasundar.dev/api/og/?title={title}`,
+        images: [
+          {
+            url: `https://janasundar.dev/api/og/?title=${title}`,
+            alt: title,
+            width: 1200,
+            height: 630,
+          },
+        ],
         title: `${title} - Janarthanan`,
         description,
       }}
