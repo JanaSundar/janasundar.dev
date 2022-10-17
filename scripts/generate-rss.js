@@ -1,6 +1,7 @@
 const { loadEnvConfig } = require('@next/env');
 const { Feed } = require('feed');
 const fs = require('fs');
+const Showdown = require('showdown');
 const { getAllPosts } = require('./getPost');
 
 loadEnvConfig(process.cwd());
@@ -32,6 +33,7 @@ loadEnvConfig(process.cwd());
   });
 
   const posts = await getAllPosts();
+  const converter = new Showdown.Converter();
 
   posts.forEach((post) => {
     const url = `${baseUrl}/posts/${post.slug}`;
@@ -40,6 +42,7 @@ loadEnvConfig(process.cwd());
       id: url,
       link: url,
       description: post.description,
+      content: converter.makeHtml(post.content),
       author: [author],
       contributor: [author],
       date: new Date(post.createdAt),
