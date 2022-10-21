@@ -11,9 +11,10 @@ interface Views {
 
 interface Props {
   slug: string;
+  isPreview: boolean;
 }
 
-export default function ViewCounter({ slug }: Props) {
+export default function ViewCounter({ slug, isPreview }: Props) {
   const { data } = useSWR<Views>(`/api/views/${slug}`, fetcher);
   const views = data?.views ?? 0;
   const prevView = useRef(0);
@@ -34,10 +35,10 @@ export default function ViewCounter({ slug }: Props) {
         method: 'POST',
       });
 
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && !isPreview) {
       registerView();
     }
-  }, [slug]);
+  }, [slug, isPreview]);
 
   useEffect(() => {
     const node = nodeRef.current!;

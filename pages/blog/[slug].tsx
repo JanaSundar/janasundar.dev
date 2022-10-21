@@ -46,7 +46,7 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export const getStaticProps = async ({ preview = false, ...context }: GetStaticPropsContext) => {
   if (process.platform === 'win32') {
     process.env.ESBUILD_BINARY_PATH = path.join(process.cwd(), 'node_modules', 'esbuild', 'esbuild.exe');
   } else {
@@ -55,7 +55,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   const { slug } = context.params!;
 
-  const post = await getSinglePost(slug as string);
+  const post = await getSinglePost(slug as string, preview);
 
   const { content, ...rest } = post;
 
@@ -89,6 +89,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
       ...result,
       timeToRead,
       ...rest,
+      preview,
     },
     revalidate: 300,
   };
@@ -101,13 +102,23 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   timeToRead,
   title,
   code,
-  description
+  description,
+  preview,
 }) => {
   const Component = useMemo(() => getMDXComponent(code), [code]);
   const isUpdated = !isEqual(new Date(createdAt), new Date(updatedAt));
 
   return (
     <>
+      {preview && (
+        <p className="p-4 border-white border-4 rounded-md text-white">
+          This is a preview page.{' '}
+          <NextLink href="/api/exit-preview" passHref>
+            <a className="underline font-bold text-link duration-200 transition-colors">Click here</a>
+          </NextLink>{' '}
+          to exit preview mode.
+        </p>
+      )}
       <SEO title={title} description={description} />
       <div className="prose prose-invert prose-base w-full px-4 md:prose-xl md:prose-p:text-lg md:prose-li:text-lg prose-p:leading-relaxed md:prose-p:leading-8 prose-pre:text-base md:prose-pre:text-lg mx-auto prose-p:tracking-wide md:prose-p:tracking-wider prose-p:text-gray-400/90 py-4">
         <NextLink href="/blog" passHref>
@@ -130,7 +141,7 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <WatchIcon />
                 <span>{timeToRead}</span>
               </p>
-              <ViewCounter slug={slug} />
+              <ViewCounter slug={slug} isPreview={preview} />
             </div>
           </div>
         </div>
