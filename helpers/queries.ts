@@ -25,7 +25,7 @@ const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_KEY as string)
 export const getSinglePost = async (slug: string, isPreview = false) => {
   const query = gql`
     query Posts($slug: String!) {
-      post(where: { slug: $slug }, ${(process.env.NODE_ENV === 'production' || !isPreview) ? 'stage: PUBLISHED' : 'stage: DRAFT'}) {
+      post(where: { slug: $slug }, ${(process.env.NODE_ENV === 'production' && !isPreview) ? 'stage: PUBLISHED' : 'stage: DRAFT'}) {
         title
         content
         description
