@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { pageview } from '~helpers/analytics';
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useAnalytics();
@@ -38,6 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </BaseLayout>
       <Toaster position="top-right" gutter={4} />
+      <Analytics />
     </>
   );
 }
