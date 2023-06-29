@@ -4,7 +4,7 @@ import { getSlugs } from '~helpers/queries';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const base_url = process.env.NEXT_PUBLIC_SITE_URL;
-  const slugs = await getSlugs();
+  const slugs = await getSlugs('posts');
 
   const fields: ISitemapField[] = slugs.map(({ slug }) => ({
     loc: `${base_url}/blog/${slug}`,
