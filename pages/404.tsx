@@ -12,8 +12,8 @@ const FourOhFour = () => {
       <div className="max-w-[400px] w-[100%] ">
         <Error404 className="mb-8" />
       </div>
-      <Link href="/" passHref>
-        <a className="flex gap-2 underline underline-offset-4 font-bold">Return home</a>
+      <Link href="/" className="flex gap-2 underline underline-offset-4 font-bold">
+        Return home
       </Link>
     </div>
   );

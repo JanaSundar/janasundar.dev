@@ -67,13 +67,11 @@ const Footer = () => {
           {Object.keys(links).map((key) => (
             <div key={key} className="flex flex-col">
               {links[key].map((v) => (
-                <Link key={v.route} href={v.route} passHref>
-                  <a
-                    className="py-1 hover:text-gray-100"
-                    {...(v.isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    {v.name}
-                  </a>
+                <Link key={v.route} href={v.route}
+                  className="py-1 hover:text-gray-100"
+                  {...(v.isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {v.name}
                 </Link>
               ))}
             </div>

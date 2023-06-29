@@ -9,16 +9,16 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import emoji from 'remark-emoji';
 import { rehypeMetaAttribute } from '~helpers/mdx';
-import { getAllSlugs, getSinglePost } from '~helpers/queries';
+import { getSlugs, getPost } from '~helpers/queries';
 import { format, formatDistanceToNow, isEqual } from 'date-fns';
 import NextLink from 'next/link';
 import BackArrowIcon from '~components/SVG/BackArrowIcon';
 import WatchIcon from '~components/SVG/WatchIcon';
 import CalendarIcon from '~components/SVG/CalendarIcon';
 import Shareable from '~components/Shareable';
-import Newsletter from '~components/Newsletter';
 import ViewCounter from '~components/ViewCounter';
 import SEO from '~components/SEO';
+import Step from '~components/Step';
 
 const Sandpack = dynamic(() => import('~components/MDX/Sandpack'), { ssr: false });
 const CodeBlock = dynamic(() => import('~components/MDX/CodeBlock'), { ssr: false });
@@ -36,17 +36,16 @@ const Hr = (props: HTMLProps<HTMLHRElement>) => (
 );
 
 export const getStaticPaths = async () => {
-  const Slugs = await getAllSlugs();
+  const Slugs = await getSlugs('posts');
 
   const paths = Slugs.map((val) => ({ params: { slug: val.slug } }));
-
   return {
     paths,
     fallback: 'blocking',
   };
 };
 
-export const getStaticProps = async ({ preview = false, ...context }: GetStaticPropsContext) => {
+export const getStaticProps = async ({ draftMode = false, ...context }: GetStaticPropsContext) => {
   if (process.platform === 'win32') {
     process.env.ESBUILD_BINARY_PATH = path.join(process.cwd(), 'node_modules', 'esbuild', 'esbuild.exe');
   } else {
@@ -55,7 +54,7 @@ export const getStaticProps = async ({ preview = false, ...context }: GetStaticP
 
   const { slug } = context.params!;
 
-  const post = await getSinglePost(slug as string, preview);
+  const post = await getPost(slug as string, draftMode);
 
   const { content, ...rest } = post;
 
@@ -89,7 +88,7 @@ export const getStaticProps = async ({ preview = false, ...context }: GetStaticP
       ...result,
       timeToRead,
       ...rest,
-      preview,
+      draftMode,
     },
     revalidate: 300,
   };
@@ -103,28 +102,26 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   title,
   code,
   description,
-  preview,
+  draftMode,
 }) => {
   const Component = useMemo(() => getMDXComponent(code), [code]);
   const isUpdated = !isEqual(new Date(createdAt), new Date(updatedAt));
 
   return (
     <>
-      {preview && (
+      {draftMode && (
         <p className="p-4 border-white border-4 rounded-md text-white">
           This is a preview page.{' '}
-          <NextLink href="/api/exit-preview" passHref>
-            <a className="underline font-bold text-link duration-200 transition-colors">Click here</a>
+          <NextLink href="/api/exit-preview" className="underline font-bold text-link duration-200 transition-colors">
+            Click here
           </NextLink>{' '}
           to exit preview mode.
         </p>
       )}
       <SEO title={title} description={description} />
       <div className="prose prose-invert prose-base w-full px-4 md:prose-xl md:prose-p:text-lg md:prose-li:text-lg prose-p:leading-relaxed md:prose-p:leading-8 prose-pre:text-base md:prose-pre:text-lg mx-auto prose-p:tracking-wide md:prose-p:tracking-wider prose-p:text-gray-400/90 py-4">
-        <NextLink href="/blog" passHref>
-          <a className="flex items-center no-underline group text-base tracking-wider font-bold text-link">
-            <BackArrowIcon className="group-hover:-translate-x-1 ease-linear duration-100" /> <span>back</span>
-          </a>
+        <NextLink href="/blog" className="flex items-center no-underline group text-base tracking-wider font-bold text-link">
+          <BackArrowIcon className="group-hover:-translate-x-1 ease-linear duration-100" /> <span>back</span>
         </NextLink>
         <div className="not-prose py-8 space-y-6">
           <h1 className="text-3xl xs:text-4xl sm:text-5xl font-sans font-bold">{title}</h1>
@@ -141,7 +138,7 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <WatchIcon />
                 <span>{timeToRead}</span>
               </p>
-              <ViewCounter slug={slug} isPreview={preview} />
+              <ViewCounter slug={slug} isPreview={draftMode} />
             </div>
           </div>
         </div>
@@ -155,13 +152,13 @@ const Post: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               Callout,
               Alert,
               Image,
+              Step,
               hr: (props) => <Hr {...props} />,
             }}
           />
         </article>
       </div>
-      <Shareable url={slug} title={title} />
-      <Newsletter />
+      <Shareable url={slug} title={title} type="post"/>
     </>
   );
 };

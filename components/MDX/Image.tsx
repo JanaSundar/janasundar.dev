@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import Image, { ImageProps } from 'next/future/image';
+import Image, { ImageProps } from 'next/image';
 import React from 'react';
 
 interface customImageProps extends ImageProps {

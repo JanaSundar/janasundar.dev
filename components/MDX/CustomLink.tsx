@@ -9,10 +9,8 @@ const CustomLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
 
   if (isInternalLink) {
     return (
-      <Link href={href} passHref>
-        <a className={`${className} hover:decoration-4`} {...props}>
-          {props.children}
-        </a>
+      <Link href={href} className={`${className} hover:decoration-4`} {...props}>
+        {props.children}
       </Link>
     );
   }

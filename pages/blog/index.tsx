@@ -1,4 +1,4 @@
-import { getAllPosts } from '~helpers/queries';
+import { getContents } from '~helpers/queries';
 import { InferGetStaticPropsType } from 'next';
 import React, { FC, useMemo, useState } from 'react';
 import Post from '~components/Post';
@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Fragment } from 'react';
 
 export const getStaticProps = async () => {
-  const posts = await getAllPosts();
+  const posts = await getContents('posts');
   return {
     props: {
       posts,

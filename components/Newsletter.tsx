@@ -32,13 +32,15 @@ const Newsletter = () => {
     setIsFormLoading(true);
 
     const email = inputEl.current!.value;
-    const res = await fetch(`/api/subscribe?email=${email}`, {
+    const res = await fetch(`http://localhost:3001/api/subscribe`, {
       method: 'POST',
+      body: JSON.stringify({ email })
     });
 
     const { error } = await res.json();
     if (error) {
       setIsFormLoading(false);
+      inputEl.current!.value = '';
       toast.error(error.message);
       return;
     }

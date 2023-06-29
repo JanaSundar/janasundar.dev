@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSinglePost } from '~helpers/queries';
+import { getPost } from '~helpers/queries';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Check the secret and next parameters
@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Fetch the headless CMS to check if the provided `slug` exists
-  const post = await getSinglePost(req.query.slug as string, true);
+  const post = await getPost(req.query.slug as string, true);
 
   // If the slug doesn't exist prevent preview mode from being enabled
   if (!post) {
@@ -17,10 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Enable Preview Mode by setting the cookies
-  res.setPreviewData({});
+  res.setDraftMode({ enable: true })
 
-  // Redirect to the path from the fetched post
-  // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  res.writeHead(307, { Location: `/blog/${post.slug}` });
-  res.end();
+  res.redirect(`/blog/${post.slug}`)
 }
