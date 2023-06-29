@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 import { getServerSideSitemap, ISitemapField } from 'next-sitemap';
-import { getAllSlugs } from '~helpers/queries';
+import { getSlugs } from '~helpers/queries';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const base_url = process.env.NEXT_PUBLIC_SITE_URL;
-  const slugs = await getAllSlugs();
+  const slugs = await getSlugs('posts');
 
   const fields: ISitemapField[] = slugs.map(({ slug }) => ({
     loc: `${base_url}/blog/${slug}`,

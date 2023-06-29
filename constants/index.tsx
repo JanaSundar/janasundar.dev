@@ -1,11 +1,11 @@
-interface Iuses {
+interface Uses {
   [x: string]: {
     name: string;
     url: string;
   }[];
 }
 
-export const uses: Iuses = {
+export const uses: Uses = {
   Desktop: [
     {
       name: 'Visual Studio Code',

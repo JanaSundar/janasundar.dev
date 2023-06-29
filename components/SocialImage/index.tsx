@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getRandomColor } from '~helpers/og';
+import { getRandomColor } from '~helpers/color';
 
 interface Props {
   background: string | null;

@@ -8,9 +8,10 @@ import toast from 'react-hot-toast';
 interface ShareableProps {
   url: string;
   title: string;
+  type: string
 }
 
-const Shareable: FC<ShareableProps> = ({ url, title }) => {
+const Shareable: FC<ShareableProps> = ({ url, title, type }) => {
   const { onCopy, hasCopied } = useClipboard(url);
   const className = 'text-gray-400/90 hover:text-gray-200 focus:outline-none';
 
@@ -23,7 +24,7 @@ const Shareable: FC<ShareableProps> = ({ url, title }) => {
   return (
     <>
       <div className="flex gap-4 flex-col items-center w-full mt-4 p-4 rounded-md justify-center">
-        <p className="text-base text-center tracking-wide font-bold text-gray-500/90">Share this post</p>
+        <p className="text-base text-center tracking-wide font-bold text-gray-500/90">Share this {type}</p>
         <div className="flex gap-4 items-center">
           <a
             href={`https://twitter.com/intent/tweet?url=${url}&via=jana__sundar&text=${title}`}

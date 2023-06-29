@@ -3,7 +3,6 @@ import GithubIcon from '~components/SVG/GithubIcon';
 import TwitterIcon from '~components/SVG/TwitterIcon';
 import { motion, Variants } from 'framer-motion';
 import LinkedInIcon from '~components/SVG/LinkedInIcon';
-import Newsletter from '~components/Newsletter';
 import Link from 'next/link';
 import DownloadIcon from '~components/SVG/DownloadIcon';
 
@@ -111,14 +110,8 @@ const Home = () => {
           create reusable components.
         </Paragragh>
         <Paragragh>Outside of technology, I love spending time with my family and watching movies.</Paragragh>
-        <Link href="/resume.pdf" passHref>
-          <a
-            className="border rounded-md px-4 py-2 mt-4 bg-white text-primary font-bold flex w-fit gap-2 items-center shadow"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Resume.pdf <DownloadIcon />
-          </a>
+        <Link href="/resume.pdf" className="border rounded-md px-4 py-2 mt-4 bg-white text-primary font-bold flex w-fit gap-2 items-center shadow" target="_blank" rel="noopener noreferrer">
+          Resume.pdf <DownloadIcon />
         </Link>
       </section>
       <section
@@ -141,7 +134,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <Newsletter />
     </>
   );
 };

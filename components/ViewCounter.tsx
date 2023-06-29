@@ -17,7 +17,7 @@ interface Props {
 export default function ViewCounter({ slug, isPreview }: Props) {
   const { data } = useSWR<Views>(`/api/views/${slug}`, fetcher);
   const views = data?.views ?? 0;
-  const prevView = useRef(0);
+  const preview = useRef(0);
   const nodeRef = useRef<HTMLParagraphElement>(null);
 
   const viewsCount = (views: number) => {
@@ -43,14 +43,14 @@ export default function ViewCounter({ slug, isPreview }: Props) {
   useEffect(() => {
     const node = nodeRef.current!;
 
-    const controls = animate(prevView.current, views, {
+    const controls = animate(preview.current, views, {
       duration: 0.2,
       onUpdate: (value) => {
         node.textContent = `${viewsCount(value).padStart(3, '0')} views`;
       },
     });
 
-    prevView.current = views;
+    preview.current = views;
 
     return () => controls.stop();
   }, [views]);
