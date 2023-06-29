@@ -22,6 +22,7 @@
     "@fontsource/inter": "^4.5.13",
     "@next/env": "^12.3.1",
     "@splitbee/web": "^0.3.0",
+    "@vercel/analytics": "^1.0.1",
     "@vercel/og": "^0.0.17",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.2",
