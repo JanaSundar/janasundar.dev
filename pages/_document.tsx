@@ -22,10 +22,11 @@ class MyDocument extends Document {
           />
           <style dangerouslySetInnerHTML={{ __html: getSandpackCssText() }} id="sandpack" />
           <script
-            async
+            defer
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
           />
           <script
+            defer
             dangerouslySetInnerHTML={{
               __html: `
              window.dataLayer = window.dataLayer || [];
