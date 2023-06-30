@@ -17,11 +17,11 @@ const links: Links = {
       route: '/blog',
       isExternal: false,
     },
-    // {
-    //   name: 'Snippets',
-    //   route: '/snippets',
-    //   isExternal: false,
-    // },
+    {
+      name: 'Snippets',
+      route: '/snippets',
+      isExternal: false,
+    },
   ],
   social: [
     {
@@ -56,6 +56,11 @@ const links: Links = {
       route: '/uses',
       isExternal: false,
     },
+    {
+      name: 'Newsletter',
+      route: 'https://janasundar.substack.com',
+      isExternal: true
+    }
   ],
 };
 

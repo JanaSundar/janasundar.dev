@@ -36,7 +36,7 @@ const Navbar = () => {
         <ul className="flex gap-4">
           <NavLink path="/">Home</NavLink>
           <NavLink path="/blog">Blog</NavLink>
-          {/* <NavLink path="/snippets">Snippets</NavLink> */}
+          <NavLink path="/snippets">Snippets</NavLink>
         </ul>
       </div>
     </nav>
