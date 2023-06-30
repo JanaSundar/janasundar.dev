@@ -41,7 +41,7 @@ export const getStaticPaths = async () => {
     };
 };
 
-export const getStaticProps = async ({ preview = false, ...context }: GetStaticPropsContext) => {
+export const getStaticProps = async ({ draftMode = false, ...context }: GetStaticPropsContext) => {
     if (process.platform === 'win32') {
         process.env.ESBUILD_BINARY_PATH = path.join(process.cwd(), 'node_modules', 'esbuild', 'esbuild.exe');
     } else {
@@ -50,7 +50,7 @@ export const getStaticProps = async ({ preview = false, ...context }: GetStaticP
 
     const { slug } = context.params!;
 
-    const post = await getSnippet(slug as string, preview);
+    const post = await getSnippet(slug as string, draftMode);
 
     const { content, ...rest } = post;
 
@@ -80,7 +80,7 @@ export const getStaticProps = async ({ preview = false, ...context }: GetStaticP
         props: {
             ...result,
             ...rest,
-            preview,
+            draftMode,
         },
         revalidate: 300,
     };
@@ -90,13 +90,13 @@ const Snippet: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
     slug,
     title,
     code,
-    preview,
+    draftMode,
 }) => {
     const Component = useMemo(() => getMDXComponent(code), [code]);
 
     return (
         <>
-            {preview && (
+            {draftMode && (
                 <p className="p-4 border-white border-4 rounded-md text-white">
                     This is a preview page.{' '}
                     <NextLink href="/api/exit-preview" className="underline font-bold text-link duration-200 transition-colors">

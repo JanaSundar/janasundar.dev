@@ -22,7 +22,7 @@ const Snippets: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ snippets
         {snippets.map(snippet => (
           <Link key={snippet.slug} href={`/snippets/${snippet.slug}`}>
             <div className='cursor-pointer h-[200px] my-auto flex justify-center items-center shadow-md ring-2  rounded-md px-4 py-2 ring-slate-200/10 bg-slate-100/[0.01] backdrop-blur-xl'>
-              <h4 className='flex-1 text-center text-xl tracking-wide font-bold'>{'useDebounce'}</h4>
+              <h4 className='flex-1 text-center text-xl tracking-wide font-bold'>{snippet.title}</h4>
             </div>
           </Link>
         ))}
