@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 import SocialImage from '~components/SocialImage';
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 };
 
 const font = fetch(new URL('../../fonts/Inter-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
