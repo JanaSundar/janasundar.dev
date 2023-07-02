@@ -119,16 +119,16 @@ const Snippet: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <article>
                     <Component
                         components={{
-                            pre: CodeBlock as any,
-                            code: Code as any,
+                            pre: CodeBlock,
+                            code: Code,
                             a: Link,
                             Sandpack,
                             Callout,
                             Alert,
                             Image,
                             Step,
-                            hr: (props) => <Hr {...props} />,
-                        }}
+                            hr: (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHRElement>, HTMLHRElement>) => <Hr {...props} />,
+                        } as any}
                     />
                 </article>
             </div>

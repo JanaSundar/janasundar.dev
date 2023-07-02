@@ -42,18 +42,9 @@ const Sandpack: FC<SandpackProps> = ({
   previewStyles,
   previewOnly = false,
 }) => {
-  const defaultFilesByTemplate: Record<SandpackPredefinedTemplate, any> = {
+  const defaultFilesByTemplate = {
     react: setupFiles,
-    'react-ts': '',
-    vanilla: '',
-    'vanilla-ts': '',
-    angular: '',
-    vue: '',
-    vue3: '',
-    svelte: '',
-    solid: '',
-    'test-ts': '',
-  };
+  } as Record<SandpackPredefinedTemplate, any>;
 
   return (
     <SandpackProvider
