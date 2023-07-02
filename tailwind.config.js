@@ -8,7 +8,7 @@ module.exports = {
       ...defaultTheme.screens,
     },
     fontFamily: {
-      sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+      sans: ['Inter Variable', ...defaultTheme.fontFamily.sans],
       mono: ['MonoLisa', ...defaultTheme.fontFamily.mono],
     },
     extend: {

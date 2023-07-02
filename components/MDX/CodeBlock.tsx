@@ -1,4 +1,4 @@
-import Highlight, { defaultProps, Language } from 'prism-react-renderer';
+import { Highlight, Language } from 'prism-react-renderer';
 import React, { FC, isValidElement } from 'react';
 import rangeParser from 'parse-numeric-range';
 import clsx from 'clsx';
@@ -33,7 +33,7 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, line, add, remove, showLineNu
   const CALLOUT = /__(.*?)__/g;
 
   return (
-    <Highlight {...defaultProps} code={code.trim()} language={language} theme={Sorcerer}>
+    <Highlight code={code.trim()} language={language} theme={Sorcerer}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           className={clsx(

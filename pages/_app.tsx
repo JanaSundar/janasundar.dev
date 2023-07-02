@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import '@fontsource/inter/variable.css';
+import '@fontsource-variable/inter';
 import type { AppProps } from 'next/app';
 import BaseLayout from '~layouts/BaseLayout';
 import { DefaultSeo } from 'next-seo';
