@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { getServerSideSitemap, ISitemapField } from 'next-sitemap';
+import { getServerSideSitemapLegacy, ISitemapField } from 'next-sitemap';
 import { getSlugs } from '~helpers/queries';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     priority: 0.7,
   }));
 
-  return getServerSideSitemap(ctx, fields);
+  return getServerSideSitemapLegacy(ctx, fields);
 };
 
 export default function Site() {
