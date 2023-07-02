@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function ViewCounter({ slug, isPreview }: Props) {
-  const { data } = useSWR<Views>(`/api/views/${slug}`, fetcher);
+  const { data } = useSWR<Views>(process.env.NODE_ENV === 'production' ? `/api/views/${slug}` : null, fetcher);
   const views = data?.views ?? 0;
   const preview = useRef(0);
   const nodeRef = useRef<HTMLParagraphElement>(null);
