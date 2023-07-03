@@ -8,6 +8,10 @@ module.exports = {
   priority: 0.7,
   robotsTxtOptions: {
     additionalSitemaps: [`${siteUrl}/sitemap.xml`, `${siteUrl}/server-sitemap.xml`],
+    policies: [{
+      userAgent: "/",
+      allow: ["/", "/api/og/*"],
+    }]
   },
   exclude: ['/server-sitemap.xml'],
 };
