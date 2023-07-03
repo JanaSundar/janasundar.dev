@@ -31,7 +31,7 @@ const nextConfig = {
 // https://securityheaders.com
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.youtube.com *.twitter.com cdn.splitbee.io *.googletagmanager.com *.google-analytics.com *.vercel-scripts.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.youtube.com *.twitter.com *.splitbee.io *.googletagmanager.com *.google-analytics.com *.vercel-scripts.com *.vercel-insights.com;
   child-src *.youtube.com *.google.com *.twitter.com;
   frame-src *.codesandbox.io;
   style-src 'self' 'unsafe-inline' *.googleapis.com;
