@@ -1,6 +1,7 @@
 import { visit } from 'unist-util-visit';
 import prettier from 'prettier';
-import parserBabel from 'prettier/parser-babel';
+import ParserBabel from 'prettier/plugins/babel'
+import prettierPluginEstree from "prettier/plugins/estree";
 
 const re = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g;
 
@@ -23,17 +24,22 @@ export const rehypeMetaAttribute = () => {
   }
 };
 
-export const prettifyCodes = (files: Record<string, string> = {}) => {
-  return Object.keys(files).reduce((acc, file) => {
-    acc[file] = prettier.format(files[file].trim(), {
+export const prettifyCodes = async (files: Record<string, string> = {}) => {
+  const prettifiedFiles: Record<string, string> = {}
+
+  for (const file of Object.values(files)) {
+    prettifiedFiles[file] = await prettier.format(file.trim(), {
       parser: 'babel',
-      plugins: [parserBabel],
+      plugins: [
+        ParserBabel,
+        prettierPluginEstree
+      ],
       useTabs: false,
       jsxSingleQuote: true,
       semi: true,
       singleQuote: true,
-      
     });
-    return acc;
-  }, {} as Record<string, string>);
+  }
+
+  return prettifiedFiles;
 };
