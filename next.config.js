@@ -2,7 +2,23 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['media.graphcms.com', 'images.pexels.com', 'media.graphassets.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'media.graphcms.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.graphassets.com',
+        port: '',
+      },
+    ],
   },
   async headers() {
     return [
