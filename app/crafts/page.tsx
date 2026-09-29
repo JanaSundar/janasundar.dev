@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import { Fragment } from 'react';
 import { crafts, CraftCard } from '@/components/crafts';
 import { Section } from '@/components/layout/section';
+import { ogMetadata } from '@/lib/og-metadata';
 import { enterStep } from '@/lib/motion';
 
 export const metadata: Metadata = {
   title: 'Crafts',
   description: 'Small interaction studies built with React and Motion.',
   alternates: { canonical: '/crafts' },
+  ...ogMetadata('/crafts'),
 };
 
 export default function CraftsPage() {

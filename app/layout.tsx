@@ -7,6 +7,7 @@ import { Rails } from '@/components/layout/rails';
 import { Nav } from '@/components/layout/nav';
 import { Providers } from '@/components/layout/providers';
 import { site } from '@/content/site';
+import { ogMetadata } from '@/lib/og-metadata';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,8 +19,7 @@ export const metadata: Metadata = {
     canonical: '/',
     types: { 'application/rss+xml': [{ url: '/rss.xml', title: `${site.name} — Writing` }] },
   },
-  openGraph: { type: 'website', locale: 'en_IN', url: site.url, siteName: site.name },
-  twitter: { card: 'summary_large_image', creator: `@${site.socials.twitter.handle}` },
+  ...ogMetadata(),
 };
 
 export const viewport: Viewport = {

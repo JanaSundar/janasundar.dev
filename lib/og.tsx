@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from '@takumi-rs/image-response';
 import { site } from '@/content/site';
+import { getEntry, type ContentKind } from '@/lib/hygraph';
 import { J_PATH } from '@/lib/logo';
 
 export const ogSize = { width: 1200, height: 630 };
@@ -44,7 +45,10 @@ function Mark() {
  * Shared social card: black and quiet, with nothing but what it needs. With no title it is the outlined mark alone,
  * which is what the home page uses; with one, the title sits bottom-left with the address above it.
  */
-export async function renderOgImage({ title }: { title?: string } = {}) {
+export async function renderOgImage({
+  title,
+  path = '',
+}: { title?: string; /** The section the card is for, such as `/blog`. */ path?: string } = {}) {
   const [regular, semibold] = await Promise.all([
     readFile(join(fontDir, 'geist-sans/Geist-Regular.ttf')),
     readFile(join(fontDir, 'geist-sans/Geist-SemiBold.ttf')),
@@ -69,6 +73,7 @@ export async function renderOgImage({ title }: { title?: string } = {}) {
             }}
           >
             {host}
+            {path}
           </div>
 
           <div
@@ -101,4 +106,24 @@ export async function renderOgImage({ title }: { title?: string } = {}) {
       ],
     }
   );
+}
+
+/** The sections that have a card of their own. `kind` marks the ones whose pages show their entry's title instead. */
+const sections: Record<string, { title: string; kind?: ContentKind }> = {
+  blog: { title: 'Writing', kind: 'post' },
+  snippets: { title: 'Snippets', kind: 'snippet' },
+  crafts: { title: 'Crafts' },
+};
+
+/**
+ * The card for a path, given as its segments: none is the home page (the mark alone), one is a section's index, and
+ * two is one of its entries. Anything else falls back to the home card.
+ */
+export async function renderOgForPath([section, slug]: string[] = []) {
+  const config = sections[section];
+  if (!config) return renderOgImage();
+
+  const path = `/${section}`;
+  const entry = slug && config.kind ? await getEntry(config.kind, slug) : null;
+  return renderOgImage({ title: slug ? (entry?.title ?? site.name) : config.title, path });
 }

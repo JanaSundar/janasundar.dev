@@ -7,11 +7,13 @@ import { getEntries, getEntry } from '@/lib/hygraph';
 import { uniqueLabels } from '@/lib/labels';
 import { firstCodeLanguage, parseContent } from '@/lib/markdown';
 import { enterStep } from '@/lib/motion';
+import { ogMetadata } from '@/lib/og-metadata';
 
 export const metadata: Metadata = {
   title: 'Snippets',
   description: 'Small, reusable pieces of code I reach for again and again.',
   alternates: { canonical: '/snippets' },
+  ...ogMetadata('/snippets'),
 };
 
 export default async function SnippetsPage() {
