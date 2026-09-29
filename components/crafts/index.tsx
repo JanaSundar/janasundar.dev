@@ -1,0 +1,45 @@
+import type { ComponentType } from 'react';
+import { HoldToConfirm } from './hold-to-confirm';
+import { MagneticDock } from './magnetic-dock';
+import { SegmentedControl } from './segmented-control';
+
+export type Craft = {
+  slug: string;
+  title: string;
+  description: string;
+  Demo: ComponentType;
+};
+
+export const crafts: Craft[] = [
+  {
+    slug: 'hold-to-confirm',
+    title: 'Hold to Confirm',
+    description:
+      'A destructive action that asks for intent instead of a dialog. Press and hold to fill; let go early and it springs back.',
+    Demo: HoldToConfirm,
+  },
+  {
+    slug: 'magnetic-dock',
+    title: 'Magnetic Dock',
+    description: 'Icons scale with cursor proximity using a spring on a derived distance value — no re-renders.',
+    Demo: MagneticDock,
+  },
+  {
+    slug: 'segmented-control',
+    title: 'Segmented Control',
+    description: 'A shared-layout pill that slides between options while the price rolls over with a blur.',
+    Demo: SegmentedControl,
+  },
+];
+
+export function CraftCard({ title, description, Demo }: Craft) {
+  return (
+    <article>
+      <div className="card relative grid h-64 place-items-center overflow-hidden bg-[radial-gradient(var(--grid)_1px,transparent_1px)] [background-size:16px_16px]">
+        <Demo />
+      </div>
+      <h3 className="text-fg mt-4 font-semibold">{title}</h3>
+      <p className="footnote mt-1">{description}</p>
+    </article>
+  );
+}

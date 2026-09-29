@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="J">
+  <style>
+    :root{--fg:#171717;--muted:#666666}
+    @media (prefers-color-scheme:dark){:root{--fg:#ededed;--muted:#a1a1a1}}
+    .a{stop-color:var(--fg)} .b{stop-color:var(--muted)}
+  </style>
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="36" y1="84" x2="64" y2="14">
+      <stop offset="0" class="b"/><stop offset="1" class="a"/>
+    </linearGradient>
+  </defs>
+  <path d="M 64 20 V 64 A 14 14 0 0 1 36 64" fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round"/>
+</svg>
