@@ -1,37 +1,47 @@
 'use client';
 
-import { useRef, useState, type ComponentPropsWithoutRef } from 'react';
-import { CheckIcon, CopyIcon } from '@/components/icons';
+import { useRef, type ComponentPropsWithoutRef } from 'react';
+import { CopyStatus, useCopy } from '@/components/ui/copy';
+import { cn } from '@/lib/cn';
+import { languageLabel } from '@/lib/code-language';
+import { Frame, FrameBar, frameAction } from './frame';
 
-type CodeBlockProps = ComponentPropsWithoutRef<'pre'> & { 'data-lang'?: string };
+type CodeBlockProps = ComponentPropsWithoutRef<'pre'> & {
+  'data-lang'?: string;
+  'data-code-title'?: string;
+  'data-meta'?: string;
+  'data-filename'?: string;
+};
 
-export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
+export function CodeBlock({
+  children,
+  className,
+  'data-code-title': title,
+  'data-meta': _meta,
+  'data-filename': _filename,
+  ...props
+}: CodeBlockProps) {
   const ref = useRef<HTMLPreElement>(null);
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopy(1500);
   const lang = props['data-lang'];
-
-  async function copy() {
-    await navigator.clipboard.writeText(ref.current?.textContent ?? '');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }
+  const label = title ?? languageLabel(lang);
 
   return (
-    <div className="group card relative overflow-hidden">
-      <div className="absolute top-2 right-2 z-10 flex items-center gap-2 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
-        {lang && lang !== 'plaintext' ? <span className="text-faint font-mono text-[11px]">{lang}</span> : null}
+    <Frame className="bg-(--code-bg)">
+      <FrameBar>
+        <span className={title ? 'text-fg' : 'text-faint'}>{label}</span>
         <button
           type="button"
-          onClick={copy}
+          onClick={() => copy(ref.current?.textContent ?? '')}
           aria-label={copied ? 'Copied' : 'Copy code'}
-          className="bg-surface text-muted hover:text-fg press border-border grid size-7 place-items-center rounded-md border"
+          className={cn(frameAction, '-mr-2')}
         >
-          {copied ? <CheckIcon className="text-accent" /> : <CopyIcon />}
+          <CopyStatus copied={copied} className="size-3.5" checkClassName="text-fg" />
         </button>
-      </div>
+      </FrameBar>
       <pre ref={ref} className={className} {...props}>
         {children}
       </pre>
-    </div>
+    </Frame>
   );
 }

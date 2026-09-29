@@ -1,10 +1,13 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { Frame } from './frame';
 
 type SandpackProps = {
   files: Record<string, string>;
   template?: string;
+  /** Label in the toolbar. Defaults to "Playground", or "Preview" when `previewOnly`. */
+  title?: string;
   previewOnly?: boolean;
   /** Subset of `files` to show, by name. Defaults to all. */
   only?: string[];
@@ -12,7 +15,11 @@ type SandpackProps = {
 
 const SandpackEditor = dynamic(() => import('./sandpack-editor'), {
   ssr: false,
-  loading: () => <div className="card text-faint grid h-[420px] place-items-center text-[13px]">Loading sandbox…</div>,
+  loading: () => (
+    <Frame className="dot-grid">
+      <div className="text-faint grid h-[560px] place-items-center font-mono text-[12px]">Loading playground…</div>
+    </Frame>
+  ),
 });
 
 export function Sandpack(props: SandpackProps) {

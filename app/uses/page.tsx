@@ -1,10 +1,11 @@
+import { newTab } from '@/lib/external';
 import type { Metadata } from 'next';
-import type { CSSProperties } from 'react';
 import { ArrowUpRight } from '@/components/icons';
 import { Section } from '@/components/layout/section';
-import { HighlightGroup, HighlightLink } from '@/components/ui/highlight';
+import { HighlightGroup } from '@/components/ui/highlight';
 import { Timeline, TimelineItem, TimelineSubItem, TimelineSubList } from '@/components/ui/timeline';
 import { uses } from '@/content/uses';
+import { enterStep } from '@/lib/motion';
 
 export const metadata: Metadata = {
   title: 'Uses',
@@ -17,7 +18,7 @@ export default function UsesPage() {
     <>
       <Section intro>
         <h1 className="title-1 text-fg enter">Uses</h1>
-        <p className="callout text-muted enter mt-3" style={{ '--i': 1 } as CSSProperties}>
+        <p className="callout text-muted enter mt-3" style={enterStep(1)}>
           The software and hardware I reach for every day.
         </p>
       </Section>
@@ -32,14 +33,11 @@ export default function UsesPage() {
               >
                 <TimelineSubList>
                   {items.map((item) => (
-                    <TimelineSubItem key={item.name} align="link">
-                      <HighlightLink
-                        href={item.url}
-                        className="group text-fg -mx-3 flex items-center justify-between px-3 py-2"
-                      >
+                    <TimelineSubItem key={item.name} align="link" highlight>
+                      <a href={item.url} {...newTab} className="group text-fg flex items-center justify-between py-2">
                         {item.name}
                         <ArrowUpRight className="text-faint/70 transition-transform group-hover:translate-x-px group-hover:-translate-y-px" />
-                      </HighlightLink>
+                      </a>
                     </TimelineSubItem>
                   ))}
                 </TimelineSubList>

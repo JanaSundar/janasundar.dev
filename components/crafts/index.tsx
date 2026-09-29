@@ -2,7 +2,6 @@ import type { ComponentType } from 'react';
 import { HoldToConfirm } from './hold-to-confirm';
 import { MagneticDock } from './magnetic-dock';
 import { SegmentedControl } from './segmented-control';
-import { ToastStack } from './toast-stack';
 
 export type Craft = {
   slug: string;
@@ -18,12 +17,6 @@ export const crafts: Craft[] = [
     description:
       'A destructive action that asks for intent instead of a dialog. Press and hold to fill; let go early and it springs back.',
     Demo: HoldToConfirm,
-  },
-  {
-    slug: 'toast-stack',
-    title: 'Stacked Notifications',
-    description: 'Toasts collapse into a compact deck and fan out on hover or focus, with spring-driven layout.',
-    Demo: ToastStack,
   },
   {
     slug: 'magnetic-dock',

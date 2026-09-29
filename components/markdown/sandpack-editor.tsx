@@ -5,33 +5,44 @@ import {
   SandpackLayout,
   SandpackPreview,
   SandpackProvider,
+  UnstyledOpenInCodeSandboxButton,
+  useSandpack,
+  type SandpackFiles,
   type SandpackPredefinedTemplate,
-  type SandpackThemeProp,
+  type SandpackTheme,
 } from '@codesandbox/sandpack-react';
 import { useTheme } from 'next-themes';
+import { ArrowUpRight } from '@/components/icons';
+import { cn } from '@/lib/cn';
+import { Frame, FrameBar, frameAction } from './frame';
 
-// Carried over from the v2 Sorcerer theme.
-const sorcerer: SandpackThemeProp = {
+/**
+ * Built from the site's own tokens, so the one theme follows light and dark without swapping. The syntax colours
+ * mirror the `th-*` rules in globals.css: ink for structure, the accent for literals, faint for comments.
+ */
+const ink: SandpackTheme = {
   colors: {
-    surface1: '#0e141a',
-    surface2: '#1a222b',
-    surface3: '#5a69861f',
-    clickable: '#8d8d96',
-    base: '#ececee',
-    disabled: '#5a6986',
-    hover: '#ffffff',
-    accent: '#ff006a',
+    surface1: 'var(--code-bg)',
+    surface2: 'var(--border)',
+    surface3: 'var(--subtle)',
+    clickable: 'var(--faint)',
+    base: 'var(--fg)',
+    disabled: 'var(--faint)',
+    hover: 'var(--fg)',
+    accent: 'var(--fg)',
+    error: '#e5484d',
+    errorSurface: 'color-mix(in oklab, #e5484d 12%, var(--bg))',
   },
   syntax: {
-    plain: '#44dfff',
-    comment: { color: '#5a6986', fontStyle: 'italic' },
-    keyword: '#ffffff',
-    tag: '#ff006a',
-    punctuation: '#5a6986',
-    definition: '#ff006a',
-    property: '#ff006a',
-    static: '#44dfff',
-    string: '#aaed36',
+    plain: 'color-mix(in oklab, var(--fg) 86%, var(--muted))',
+    comment: { color: 'var(--faint)', fontStyle: 'italic' },
+    keyword: { color: 'var(--fg)', fontWeight: '600' },
+    definition: 'var(--fg)',
+    punctuation: 'var(--faint)',
+    property: 'var(--muted)',
+    tag: 'var(--fg)',
+    static: 'var(--accent)',
+    string: 'var(--accent)',
   },
   font: {
     body: 'var(--font-geist-sans)',
@@ -43,7 +54,7 @@ const sorcerer: SandpackThemeProp = {
 
 const indexJs = `import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./center.css";
+import "./stage.css";
 import App from "./App";
 
 createRoot(document.getElementById("root")).render(
@@ -53,25 +64,58 @@ createRoot(document.getElementById("root")).render(
 );
 `;
 
-const centerCss = `* { margin: 0; padding: 0; box-sizing: border-box; }
-body { display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, sans-serif; }
+/**
+ * The preview sits on the same dotted grid as figures. The iframe can't read the page's tokens, so their current
+ * values are copied in; `theme` is only there so a theme change produces new CSS.
+ */
+function stageCss(theme: string | undefined) {
+  const root = getComputedStyle(document.documentElement);
+  const token = (name: string) => root.getPropertyValue(name).trim();
+  return `* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { color-scheme: ${theme === 'dark' ? 'dark' : 'light'}; }
+body {
+  display: flex; align-items: center; justify-content: center; min-height: 100vh;
+  font-family: system-ui, sans-serif; color: ${token('--fg')};
+  background: ${token('--bg')} radial-gradient(${token('--grid')} 1px, transparent 1px) 0 0 / 16px 16px;
+}
 `;
-
-const reactSetup = {
-  '/index.js': { code: indexJs, hidden: true },
-  '/center.css': { code: centerCss, hidden: true },
-};
+}
 
 const normalize = (name: string) => (name.startsWith('/') ? name : `/${name}`);
+
+function Toolbar({ title, previewOnly }: { title: string; previewOnly: boolean }) {
+  const { sandpack } = useSandpack();
+
+  return (
+    <FrameBar>
+      <span className="text-muted flex items-center gap-2">
+        <span aria-hidden className="bg-accent size-1.5 rounded-full" />
+        {title}
+      </span>
+      {previewOnly ? null : (
+        <span className="flex items-center gap-1">
+          <button type="button" onClick={() => sandpack.resetAllFiles()} className={frameAction}>
+            Reset
+          </button>
+          <UnstyledOpenInCodeSandboxButton className={cn(frameAction, '-mr-2')}>
+            CodeSandbox
+            <ArrowUpRight />
+          </UnstyledOpenInCodeSandboxButton>
+        </span>
+      )}
+    </FrameBar>
+  );
+}
 
 type Props = {
   files: Record<string, string>;
   template?: string;
+  title?: string;
   previewOnly?: boolean;
   only?: string[];
 };
 
-export default function SandpackEditor({ files, template = 'react', previewOnly = false, only }: Props) {
+export default function SandpackEditor({ files, template = 'react', title, previewOnly = false, only }: Props) {
   const { resolvedTheme } = useTheme();
   const wanted = only?.map(normalize);
 
@@ -79,19 +123,29 @@ export default function SandpackEditor({ files, template = 'react', previewOnly 
     .map(([name, code]) => [normalize(name), code.trim()] as const)
     .filter(([name]) => !wanted || wanted.includes(name));
 
+  const setup: SandpackFiles =
+    template === 'react'
+      ? {
+          '/index.js': { code: indexJs, hidden: true },
+          '/stage.css': { code: stageCss(resolvedTheme), hidden: true },
+        }
+      : {};
+
   return (
-    <div className="not-prose card overflow-hidden">
+    <Frame className="bg-(--code-bg)">
       <SandpackProvider
         template={template as SandpackPredefinedTemplate}
-        theme={resolvedTheme === 'dark' ? sorcerer : 'light'}
-        files={{ ...Object.fromEntries(entries), ...(template === 'react' ? reactSetup : {}) }}
+        theme={ink}
+        files={{ ...Object.fromEntries(entries), ...setup }}
         options={{ externalResources: ['https://cdn.tailwindcss.com'] }}
       >
-        <SandpackLayout style={{ border: 0, borderRadius: 0 }}>
+        <Toolbar title={title ?? (previewOnly ? 'Preview' : 'Playground')} previewOnly={previewOnly} />
+        {/* Stacked rather than side by side: the text column is too narrow to split. */}
+        <SandpackLayout className="sandpack-stack">
           {previewOnly ? null : <SandpackCodeEditor showTabs showLineNumbers />}
-          <SandpackPreview showOpenInCodeSandbox={!previewOnly} showRefreshButton={!previewOnly} />
+          <SandpackPreview showOpenInCodeSandbox={false} showRefreshButton={!previewOnly} />
         </SandpackLayout>
       </SandpackProvider>
-    </div>
+    </Frame>
   );
 }

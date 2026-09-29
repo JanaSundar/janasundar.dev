@@ -1,24 +1,44 @@
+import { externalProps } from '@/lib/external';
 import type { MarkdownDocument } from '@tanstack/markdown';
 import { renderMarkdownReact, type MarkdownComponents } from '@tanstack/markdown/react';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { getCodeHighlighter } from '@/lib/shiki';
+import { codeHighlighter } from '@/lib/highlight';
 import { markdownExtensions } from '@/lib/markdown';
 import { CodeBlock } from './code-block';
+import { Figure } from './figure';
 import { Sandpack } from './sandpack';
 import { Spoiler } from './spoiler';
 
 function MdLink({ href = '', children, ...props }: ComponentPropsWithoutRef<'a'>) {
-  const external = /^https?:\/\//.test(href);
   return (
-    <a href={href} {...(external && { target: '_blank', rel: 'noreferrer' })} {...props}>
+    <a href={href} {...externalProps(href)} {...props}>
       {children}
     </a>
   );
 }
 
-function MdImage({ alt = '', ...props }: ComponentPropsWithoutRef<'img'>) {
-  // oxlint-disable-next-line nextjs/no-img-element -- CMS images have unknown dimensions.
-  return <img alt={alt} loading="lazy" decoding="async" {...props} />;
+/**
+ * Images sit inside a paragraph, so the frame is built from spans rather than `<figure>`. A Markdown title
+ * (`![alt](src "caption")`) becomes the caption.
+ */
+function MdImage({ alt = '', title, ...props }: ComponentPropsWithoutRef<'img'>) {
+  return (
+    <span className="md-media">
+      {/* oxlint-disable-next-line nextjs/no-img-element -- CMS images have unknown dimensions. */}
+      <img alt={alt} loading="lazy" decoding="async" {...props} />
+      {title ? <span className="md-caption">{title}</span> : null}
+    </span>
+  );
+}
+
+/** The renderer wraps titled fences in `<figure><figcaption>`; `CodeBlock` draws its own header instead. */
+function MdFigure({ className, children, ...props }: ComponentPropsWithoutRef<'figure'>) {
+  if (className === 'tm-code-frame') return <>{children}</>;
+  return (
+    <figure className={className} {...props}>
+      {children}
+    </figure>
+  );
 }
 
 type EmbedProps = {
@@ -38,10 +58,13 @@ function createEmbed(files: Record<string, string> | null) {
           <Sandpack
             files={files}
             template={attributes.template}
+            title={attributes.title}
             previewOnly={attributes.previewonly === 'true' || attributes.previewOnly === 'true'}
             only={attributes.files?.split(',').map((f) => f.trim())}
           />
         ) : null;
+      case 'figure':
+        return <Figure caption={attributes.caption}>{children}</Figure>;
       case 'spoiler':
         return <Spoiler>{children}</Spoiler>;
       default:
@@ -55,13 +78,13 @@ type MarkdownProps = {
   files?: Record<string, string> | null;
 };
 
-export async function Markdown({ document, files = null }: MarkdownProps) {
-  const highlighter = await getCodeHighlighter();
-
+export function Markdown({ document, files = null }: MarkdownProps) {
   const components = {
     a: MdLink,
     img: MdImage,
     pre: CodeBlock,
+    figure: MdFigure,
+    figcaption: () => null,
     'md-comment-component': createEmbed(files),
   } satisfies MarkdownComponents;
 
@@ -69,7 +92,8 @@ export async function Markdown({ document, files = null }: MarkdownProps) {
     <div className="prose">
       {renderMarkdownReact(document, {
         extensions: markdownExtensions,
-        highlighter,
+        highlighter: codeHighlighter,
+        codeLineNumbers: true,
         headingAnchors: { content: '#', className: 'heading-anchor' },
         components,
       })}

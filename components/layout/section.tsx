@@ -29,7 +29,10 @@ export function Section({ id, label, aside, intro = false, stagger = false, clas
   return (
     <>
       {intro ? null : <SectionDivider />}
-      <section id={id} className={cn('px-5 py-10 sm:px-8 sm:py-12', intro && 'pt-14 sm:pt-16', className)}>
+      <section
+        id={id}
+        className={cn('px-5 py-10 sm:px-8 sm:py-12', intro && 'relative z-20 pt-14 sm:pt-16', className)}
+      >
         {intro ? (
           <>
             {heading}

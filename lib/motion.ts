@@ -1,4 +1,5 @@
 import type { Variants } from 'motion/react';
+import type { CSSProperties } from 'react';
 
 export const easeOut = [0.23, 1, 0.32, 1] as const;
 
@@ -25,3 +26,16 @@ export function itemVariants(reduce: boolean | null): Variants {
     },
   };
 }
+
+/** Position in a CSS `enter` / `pop` sequence (see globals.css): each step starts 80ms after the one before. */
+export const enterStep = (i: number) => ({ '--i': i }) as CSSProperties;
+
+/** Content swapping in or out: it scales and blurs through the change instead of sliding or popping. */
+export const morph = {
+  initial: { opacity: 0, scale: 0.9, filter: 'blur(5px)' },
+  animate: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+  exit: { opacity: 0, scale: 0.9, filter: 'blur(5px)' },
+};
+
+/** The reduced-motion stand-in for `morph`: a plain fade. */
+export const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } };

@@ -35,4 +35,4 @@ Older MDX posts that use `<Callout>`, `<Sandpack />` or `<Spoiler>` are rewritte
 ### Hygraph setup
 
 - **Webhook:** on publish or unpublish, `POST https://janasundar.dev/api/revalidate` with the header `x-revalidate-secret: $HYGRAPH_REVALIDATE_SECRET`.
-- **Preview URL:** `https://janasundar.dev/api/draft?secret=$GRAPHCMS_PREVIEW_SECRET&slug={slug}&type=post` (use `type=snippet` for snippets).
+- **Preview URL:** `https://janasundar.dev/api/draft?secret=$HYGRAPH_PREVIEW_SECRET&slug={slug}&type=post` (use `type=snippet` for snippets).

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import { Fragment, type CSSProperties } from 'react';
+import { Fragment } from 'react';
 import { crafts, CraftCard } from '@/components/crafts';
 import { Section } from '@/components/layout/section';
+import { enterStep } from '@/lib/motion';
 
 export const metadata: Metadata = {
   title: 'Crafts',
@@ -14,7 +15,7 @@ export default function CraftsPage() {
     <>
       <Section intro>
         <h1 className="title-1 text-fg enter">Crafts</h1>
-        <p className="callout text-muted enter mt-3" style={{ '--i': 1 } as CSSProperties}>
+        <p className="callout text-muted enter mt-3" style={enterStep(1)}>
           Small interaction studies — the details I like to sweat. Built with React and Motion; poke at them.
         </p>
       </Section>

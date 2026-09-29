@@ -1,4 +1,4 @@
-import type { MarkdownDocument, MarkdownExtension } from '@tanstack/markdown';
+import type { CodeBlockNode, MarkdownDocument, MarkdownExtension } from '@tanstack/markdown';
 import { calloutsExtension } from '@tanstack/markdown/extensions/callouts';
 import { commentComponentsExtension } from '@tanstack/markdown/extensions/comment-components';
 import { headingCollectionExtension } from '@tanstack/markdown/extensions/headings';
@@ -12,6 +12,11 @@ export const markdownExtensions: MarkdownExtension[] = [
 
 export function parseContent(source: string): MarkdownDocument {
   return parseMarkdown(normalizeLegacyMdx(source), { extensions: markdownExtensions });
+}
+
+/** The language of the first fenced code block in a parsed document, if it has one. */
+export function firstCodeLanguage(document: MarkdownDocument) {
+  return document.children.find((node): node is CodeBlockNode => node.type === 'code')?.lang;
 }
 
 const calloutKinds: Record<string, string> = {

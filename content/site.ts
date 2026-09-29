@@ -1,6 +1,6 @@
 export const site = {
-  name: 'Janarthanan',
-  fullName: 'Janarthanan Sundar',
+  name: 'Jana',
+  fullName: 'Janarthanan',
   role: 'Senior Software Engineer',
   url: 'https://janasundar.dev',
   description:

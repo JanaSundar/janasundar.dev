@@ -1,11 +1,16 @@
+import { newTab } from '@/lib/external';
 import type { Project } from '@/content/projects';
-import { ArrowUpRight } from '@/components/icons';
+import { ArrowUpRight, DevWizLogo, LuzoLogo } from '@/components/icons';
 import { RevealLi } from '@/components/ui/reveal';
+
+const logos = { luzo: LuzoLogo, devwiz: DevWizLogo };
 
 const wrapHue = (hue: number) => hue % 360;
 
 /** App-icon style tile: continuous squircle-ish corners, soft gloss and a hairline edge. */
-function ProjectIcon({ hue, glyph }: Pick<Project, 'hue' | 'glyph'>) {
+function ProjectIcon({ hue, glyph, logo }: Pick<Project, 'hue' | 'glyph' | 'logo'>) {
+  const Logo = logo ? logos[logo] : null;
+
   return (
     <span
       aria-hidden
@@ -14,16 +19,16 @@ function ProjectIcon({ hue, glyph }: Pick<Project, 'hue' | 'glyph'>) {
         background: `linear-gradient(160deg, oklch(0.74 0.15 ${wrapHue(hue)}), oklch(0.55 0.19 ${wrapHue(hue + 25)}))`,
       }}
     >
-      {glyph}
+      {Logo ? <Logo /> : glyph}
     </span>
   );
 }
 
-export function ProjectRow({ name, description, href, hue, glyph }: Project) {
+export function ProjectRow({ name, description, href, hue, glyph, logo }: Project) {
   return (
     <RevealLi>
-      <a href={href} target="_blank" rel="noreferrer" className="flex items-center gap-3.5 py-2.5">
-        <ProjectIcon hue={hue} glyph={glyph} />
+      <a href={href} {...newTab} className="flex items-center gap-3.5 py-2.5">
+        <ProjectIcon hue={hue} glyph={glyph} logo={logo} />
         <span className="min-w-0 flex-1">
           <span className="text-fg block font-medium">{name}</span>
           <span className="footnote block">{description}</span>

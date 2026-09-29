@@ -2,16 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'motion/react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Logo } from '@/components/icons';
+import { navLinks } from '@/content/nav';
 import { ThemeToggle } from './theme-toggle';
-
-const links = [
-  { href: '/', label: 'About' },
-  { href: '/blog', label: 'Writing' },
-  { href: '/snippets', label: 'Snippets' },
-  { href: '/crafts', label: 'Crafts' },
-] as const;
 
 function isActive(pathname: string, href: string) {
   return href === '/' ? pathname === '/' : pathname.startsWith(href);
@@ -19,6 +13,29 @@ function isActive(pathname: string, href: string) {
 
 export function Nav() {
   const pathname = usePathname();
+  const list = useRef<HTMLUListElement>(null);
+  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
+  const [animate, setAnimate] = useState(false);
+
+  // The pill is a plain absolutely-positioned box measured from the active link, so it only ever slides
+  // horizontally. (A shared-layout animation re-measured it against the page scroll and flew in from below.)
+  useLayoutEffect(() => {
+    const measure = () => {
+      const active = list.current?.querySelector<HTMLElement>('[aria-current="page"]');
+      setPill(active ? { left: active.offsetLeft, width: active.offsetWidth } : null);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+    // pathname isn't read here, but a route change is what moves the active link.
+    // oxlint-disable-next-line react/exhaustive-deps
+  }, [pathname]);
+
+  // Skip the transition on the first paint so the pill doesn't slide in from the left on load.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setAnimate(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   return (
     <header className="material sticky top-0 z-40">
@@ -27,8 +44,15 @@ export function Nav() {
           <Logo />
         </Link>
         <div className="flex items-center gap-0.5">
-          <ul className="flex items-center">
-            {links.map(({ href, label }) => {
+          <ul ref={list} className="relative flex items-center">
+            <li
+              aria-hidden
+              className={`bg-subtle pointer-events-none absolute inset-y-0 rounded-md ${
+                animate ? 'transition-[left,width,opacity] duration-300 ease-(--ease-out)' : ''
+              }`}
+              style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
+            />
+            {navLinks.map(({ href, label }) => {
               const active = isActive(pathname, href);
               return (
                 <li key={href}>
@@ -39,14 +63,7 @@ export function Nav() {
                       active ? 'text-fg' : 'text-muted hover:text-fg'
                     }`}
                   >
-                    {active ? (
-                      <motion.span
-                        layoutId="nav-pill"
-                        className="bg-subtle absolute inset-0 rounded-md"
-                        transition={{ type: 'spring', duration: 0.35, bounce: 0 }}
-                      />
-                    ) : null}
-                    <span className="relative">{label}</span>
+                    {label}
                   </Link>
                 </li>
               );

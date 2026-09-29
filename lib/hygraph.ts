@@ -22,7 +22,7 @@ export type ContentEntry = ContentSummary & {
   files: Record<string, string> | null;
 };
 
-const endpoint = process.env.HYGRAPH_ENDPOINT ?? process.env.NEXT_PUBLIC_GRAPHCMS_KEY;
+const endpoint = process.env.HYGRAPH_ENDPOINT;
 
 const collection = { post: 'posts', snippet: 'snippets' } as const;
 
@@ -103,4 +103,12 @@ export async function getEntry(kind: ContentKind, slug: string): Promise<Content
 export async function getSlugs(kind: ContentKind): Promise<string[]> {
   const entries = await getEntries(kind);
   return entries.map((entry) => entry.slug);
+}
+
+/** The entries either side of `slug` in the index, which is ordered newest first. */
+export async function getAdjacent(kind: ContentKind, slug: string) {
+  const entries = await getEntries(kind);
+  const index = entries.findIndex((entry) => entry.slug === slug);
+  if (index === -1) return {};
+  return { newer: entries[index - 1], older: entries[index + 1] };
 }

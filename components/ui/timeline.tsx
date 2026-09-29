@@ -1,23 +1,39 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { HighlightItem } from '@/components/ui/highlight';
 import { RevealLi } from '@/components/ui/reveal';
 
 export type NodeTone = 'default' | 'done' | 'current';
 
-/** Parent node: hollow when upcoming, filled once done, accent when current. */
-export function Node({ tone = 'default', className }: { tone?: NodeTone; className?: string }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        'absolute left-0 size-2 rounded-full transition-colors duration-200',
-        tone === 'default' && 'border-faint bg-bg border',
-        tone === 'done' && 'bg-faint',
-        tone === 'current' && 'bg-accent shadow-[0_0_0_3px_color-mix(in_oklab,var(--accent)_22%,transparent)]',
-        className
-      )}
-    />
+/** Node styles: hollow when upcoming, filled once done, accent when current. Parents are `md`, sub-items `sm`. */
+export function nodeClass(tone: NodeTone, size: 'sm' | 'md' = 'md') {
+  return cn(
+    'absolute left-0 rounded-full transition-colors duration-200',
+    size === 'md' ? 'size-2' : 'size-1.5',
+    tone === 'default' && 'border-faint bg-bg border',
+    tone === 'done' && 'bg-faint',
+    tone === 'current' && 'bg-accent shadow-[0_0_0_3px_color-mix(in_oklab,var(--accent)_22%,transparent)]'
   );
+}
+
+export function Node({
+  tone = 'default',
+  size,
+  className,
+}: {
+  tone?: NodeTone;
+  size?: 'sm' | 'md';
+  className?: string;
+}) {
+  return <span aria-hidden className={cn(nodeClass(tone, size), className)} />;
+}
+
+/**
+ * The dotted line between two nodes. It starts just under its own node and runs past the item's bottom edge to
+ * just above the next node, so consecutive nodes are always joined.
+ */
+function Spine({ className }: { className: string }) {
+  return <span aria-hidden className={cn('dots-list-y absolute', className)} />;
 }
 
 /** A title/sub-item list joined by a dotted spine. Parents are nodes on the spine; sub-items hang off it. */
@@ -30,77 +46,147 @@ type TimelineItemProps = {
   aside?: ReactNode;
   tone?: NodeTone;
   id?: string;
+  /** Tighter spacing between items, for compact places like the contents island. */
+  dense?: boolean;
+  /**
+   * Fade in with the section's scroll reveal (default). That reveal plays once, so items that appear later, such as
+   * the result of a filter, would stay hidden: lists that change turn it off and let their container do the fading.
+   */
+  reveal?: boolean;
   children?: ReactNode;
 };
 
-export function TimelineItem({ title, aside, tone = 'default', id, children }: TimelineItemProps) {
+/**
+ * A parent on the spine. The spine is one path: a parent without sub-items runs straight to the next parent; a
+ * parent with sub-items hands the path to them (the first sub-item's elbow) and the last sub-item brings it back.
+ * `--tl-gap` is the space before the next parent, which that return curve has to cross.
+ */
+export function TimelineItem({
+  title,
+  aside,
+  tone = 'default',
+  id,
+  dense = false,
+  reveal = true,
+  children,
+}: TimelineItemProps) {
+  const Item = reveal ? RevealLi : 'li';
   return (
-    <RevealLi id={id} className="group relative pb-7 pl-7 last:pb-0">
-      <Node tone={tone} className="top-[0.55rem]" />
-      <span aria-hidden className="dots-list-y absolute top-[1.35rem] bottom-1.5 left-[3.5px] group-last:hidden" />
-      <div className="flex items-baseline justify-between gap-4">
+    <Item
+      id={id}
+      className={cn('group relative pb-(--tl-gap) pl-7 last:pb-0', dense ? '[--tl-gap:0.75rem]' : '[--tl-gap:1.75rem]')}
+    >
+      <Node tone={tone} className="top-[calc(0.55rem-1px)]" />
+      <Spine className="top-[calc(1.35rem-1px)] -bottom-[calc(0.55rem-4px)] left-[3.5px] group-last:hidden group-has-[[data-sub-list]]:hidden" />
+      {/* A fixed row height, whatever the title's size: the node, spine and elbow offsets are measured against it. */}
+      <div className="flex items-baseline justify-between gap-4 leading-[1.55rem]">
         <div className="text-fg min-w-0">{title}</div>
         {aside ? <div className="text-faint shrink-0 text-[13px] tabular-nums">{aside}</div> : null}
       </div>
       {children}
-    </RevealLi>
+    </Item>
   );
 }
 
-/** Sub-items under a parent: small hollow nodes, a short spine between them and a curved elbow off the parent spine. */
+/** Sub-items under a parent: small nodes in their own column, joined to the parent's path by an elbow in and a curve out. */
 export function TimelineSubList({ children, className }: { children: ReactNode; className?: string }) {
-  return <ul className={cn('mt-2', className)}>{children}</ul>;
+  // `data-sub-list` is how a parent knows to hand its spine to these items (see `TimelineItem`).
+  return (
+    <ul data-sub-list className={cn('mt-2', className)}>
+      {children}
+    </ul>
+  );
 }
 
+/** Corner radius of both curves (into the sub-items and back out), so the path turns the same way each time. */
+const R = 8;
+
 /**
- * `align="link"` is for rows that carry their own vertical padding (hover-fill links): the node drops to the
- * first line's centre. `align="text"` is for bare text.
+ * Where a sub-item's node centre sits (`--node-y`), from which its node, spine and curves are all placed.
+ * `link` rows carry their own padding, so the node drops to the first line's centre inside it; `text` rows centre
+ * the node on the first line of whatever type the row uses (`lh`), so any text size lines up.
+ */
+const nodeY = { text: '[--node-y:0.5lh]', link: '[--node-y:calc(1.1rem+2px)]' } as const;
+const node = 'top-[calc(var(--node-y)-3px)]';
+/** Just under the node: where lines leaving it start. */
+const below = 'top-[calc(var(--node-y)+6px)]';
+
+/**
+ * `className` sets the row's type (size, leading, colour) on the item itself, so the node is measured against the
+ * same line box as the text. `highlight` joins the nearest `HighlightGroup`: hovering or focusing the item moves
+ * the group's accent node onto this item's node.
  */
 export function TimelineSubItem({
   children,
   tone = 'default',
   align = 'text',
+  highlight = false,
+  className,
 }: {
   children: ReactNode;
   tone?: NodeTone;
   align?: 'text' | 'link';
+  highlight?: boolean;
+  className?: string;
 }) {
-  const link = align === 'link';
   return (
-    <li className="group/sub relative pl-5">
+    <li className={cn('group/sub relative pl-5', nodeY[align], className)}>
       {/*
-        Elbow from the parent spine into the first sub-item. The parent draws its own spine only when another
-        item follows, so on the last item the elbow brings its own stem.
+        In: from just under the parent's node, down and round into this node. The straight part stretches; only the
+        corner is drawn. The box starts on the parent spine (x 0-1) and its bottom edge is level with this node.
       */}
-      <svg
+      <span
         aria-hidden
-        width="24.5"
-        height={link ? 40 : 34}
-        viewBox={`0 0 24.5 ${link ? 40 : 34}`}
-        fill="none"
-        className="text-faint/70 absolute top-[-13px] -left-[24.5px] hidden group-first/sub:block"
+        className="absolute top-[-14px] -left-[24.5px] hidden h-[calc(14px+var(--node-y)+1px)] w-[24.5px] flex-col group-first/sub:flex"
       >
-        <path
-          d={link ? 'M.5 23Q.5 33.6 12.5 33.6H24.5' : 'M.5 17Q.5 27.2 12.5 27.2H24.5'}
-          stroke="currentColor"
-          strokeDasharray="3 3"
-        />
-        <path
-          d={link ? 'M.5 0V23' : 'M.5 0V17'}
-          stroke="currentColor"
-          strokeDasharray="3 3"
-          className="hidden group-last:block"
-        />
-      </svg>
-      <Node tone={tone} className={cn('size-1.5', link ? 'top-[1.1rem]' : 'top-[0.7rem]')} />
+        <span className="dots-list-y flex-1" />
+        <svg
+          aria-hidden
+          width="24.5"
+          height={R + 1}
+          viewBox={`0 0 24.5 ${R + 1}`}
+          fill="none"
+          className="text-faint/70 shrink-0"
+        >
+          <path d={`M.5 0Q.5 ${R} ${R + 0.5} ${R}H24.5`} stroke="currentColor" strokeDasharray="3 3" />
+        </svg>
+      </span>
+      <Node tone={tone} size="sm" className={node} />
+      <Spine className={cn('left-[2.5px] -bottom-[calc(var(--node-y)-6px)] group-last/sub:hidden', below)} />
+      {/*
+        Out: the mirror of the way in. From the last sub-item down its column, round to the left, across, and round
+        down into the parent column, ending just above the next parent's node. It spans the rest of this item plus
+        the gap, so the straight part stretches. The box runs from the parent spine (x 0-1) to this column (x 27-28).
+      */}
       <span
         aria-hidden
         className={cn(
-          'dots-list-y absolute bottom-0 left-[2.5px] group-last/sub:hidden',
-          link ? 'top-[1.7rem]' : 'top-[1.3rem]'
+          'absolute -left-[24.5px] hidden w-7 flex-col group-last/sub:flex group-last:hidden!',
+          'bottom-[calc(-1*var(--tl-gap)-0.55rem+4px)]',
+          below
         )}
-      />
-      {children}
+      >
+        <span className="dots-list-y flex-1 self-end" />
+        <svg
+          aria-hidden
+          width="28"
+          height={2 * R}
+          viewBox={`0 0 28 ${2 * R}`}
+          fill="none"
+          className="text-faint/70 shrink-0"
+        >
+          <path
+            d={`M27.5 0Q27.5 ${R} ${27.5 - R} ${R}H${R + 0.5}Q.5 ${R} .5 ${2 * R}`}
+            stroke="currentColor"
+            strokeDasharray="3 3"
+          />
+        </svg>
+      </span>
+      {highlight ? (
+        <HighlightItem indicator={cn(nodeClass('current', 'sm'), 'z-10', node)}>{children}</HighlightItem>
+      ) : (
+        children
+      )}
     </li>
   );
 }

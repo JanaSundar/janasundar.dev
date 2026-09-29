@@ -1,6 +1,7 @@
 import { cn } from '@/lib/cn';
 
-function Tick({ className }: { className: string }) {
+/** A small crosshair that marks where a band meets the column edge. */
+export function Tick({ className }: { className: string }) {
   return (
     <span aria-hidden className={cn('pointer-events-none absolute z-10 size-[9px] text-faint', className)}>
       <span className="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-current" />

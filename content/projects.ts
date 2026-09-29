@@ -6,6 +6,8 @@ export type Project = {
   /** Hue (0–360) for the generated icon tile. */
   hue: number;
   glyph: string;
+  /** A bundled logo to show in the tile instead of the glyph. */
+  logo?: 'luzo' | 'devwiz';
 };
 
 export const projects: Project[] = [
@@ -16,14 +18,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/JanaSundar/luzo',
     hue: 262,
     glyph: '⌥',
-  },
-  {
-    name: 'Thaal',
-    description: 'A private, fully client-side PDF editor. Your files never leave the browser.',
-    href: 'https://thaalpdf.vercel.app',
-    repo: 'https://github.com/JanaSundar/thaal',
-    hue: 18,
-    glyph: 'த',
+    logo: 'luzo',
   },
   {
     name: 'DevWiz',
@@ -32,13 +27,6 @@ export const projects: Project[] = [
     repo: 'https://github.com/JanaSundar/devwiz',
     hue: 152,
     glyph: '{}',
-  },
-  {
-    name: 'svg2jsx',
-    description: 'Paste an SVG, get a clean React component back.',
-    href: 'https://svg2jsx.vercel.app',
-    repo: 'https://github.com/JanaSundar/svg2jsx',
-    hue: 205,
-    glyph: '</>',
+    logo: 'devwiz',
   },
 ];

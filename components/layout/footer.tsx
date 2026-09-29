@@ -1,3 +1,4 @@
+import { newTab } from '@/lib/external';
 import Link from 'next/link';
 import { site } from '@/content/site';
 
@@ -17,7 +18,7 @@ export function Footer() {
         <a href="/rss.xml" className={linkClass}>
           RSS
         </a>
-        <a href={site.newsletter} target="_blank" rel="noreferrer" className={linkClass}>
+        <a href={site.newsletter} {...newTab} className={linkClass}>
           Newsletter
         </a>
       </nav>

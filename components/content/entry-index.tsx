@@ -1,9 +1,9 @@
-import type { CSSProperties } from 'react';
 import { Section } from '@/components/layout/section';
-import { HighlightGroup } from '@/components/ui/highlight';
 import { EntryLink } from '@/components/ui/entry-row';
+import { HighlightGroup } from '@/components/ui/highlight';
 import { Timeline, TimelineItem, TimelineSubItem, TimelineSubList } from '@/components/ui/timeline';
 import type { ContentSummary } from '@/lib/hygraph';
+import { enterStep } from '@/lib/motion';
 
 type EntryIndexProps = {
   title: string;
@@ -26,7 +26,7 @@ export function EntryIndex({ title, intro, basePath, entries }: EntryIndexProps)
     <>
       <Section intro>
         <h1 className="title-1 text-fg enter">{title}</h1>
-        <p className="callout text-muted enter mt-3 max-w-prose" style={{ '--i': 1 } as CSSProperties}>
+        <p className="callout text-muted enter mt-3 max-w-prose" style={enterStep(1)}>
           {intro}
         </p>
       </Section>
@@ -47,12 +47,13 @@ export function EntryIndex({ title, intro, basePath, entries }: EntryIndexProps)
                 >
                   <TimelineSubList>
                     {group.map((entry) => (
-                      <TimelineSubItem key={entry.slug} align="link">
+                      <TimelineSubItem key={entry.slug} align="link" highlight>
                         <EntryLink
                           href={`${basePath}/${entry.slug}`}
                           title={entry.title}
                           description={entry.description}
                           date={entry.createdAt}
+                          highlight={false}
                         />
                       </TimelineSubItem>
                     ))}
