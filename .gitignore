@@ -27,14 +27,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-
-rss.xml
-og/
-sitemap*.xml
-robots.txt

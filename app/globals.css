@@ -1,0 +1,456 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-grid: var(--grid);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Motion tokens (strong curves; built-in easings are too weak). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+:root {
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --subtle: #f4f4f5;
+  --border: #e6e6e6;
+  --grid: #d4d4d8;
+  --fg: #171717;
+  --muted: #666666;
+  --faint: #8f8f8f;
+  --accent: #0072f5;
+  --code-bg: #f7f7f7;
+  --highlight: rgb(255 255 255 / 0.6);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --subtle: #141414;
+  --border: #242424;
+  --grid: #262626;
+  --fg: #ededed;
+  --muted: #a1a1a1;
+  --faint: #6f6f6f;
+  --accent: #52a8ff;
+  --code-bg: #0a0f14;
+  --highlight: rgb(255 255 255 / 0.06);
+  color-scheme: dark;
+}
+
+/* Increased contrast: solid, defined lines. */
+@media (prefers-contrast: more) {
+  :root {
+    --border: #8f8f8f;
+    --grid: #8f8f8f;
+    --muted: #4d4d4d;
+    --faint: #666666;
+  }
+  .dark {
+    --border: #8f8f8f;
+    --grid: #8f8f8f;
+    --muted: #c8c8c8;
+    --faint: #a1a1a1;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    letter-spacing: -0.011em;
+    font-optical-sizing: auto;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Typography: tracking tightens hard as size grows. */
+@utility title-1 {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+}
+
+@utility title-2 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+@utility callout {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  letter-spacing: -0.015em;
+}
+
+@utility footnote {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: -0.006em;
+  color: var(--muted);
+}
+
+@utility label {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: -0.006em;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* Flat bordered surface. */
+@utility card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* Sticky chrome: translucent with a hairline edge; content scrolls underneath. */
+.material {
+  background: color-mix(in oklab, var(--bg) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background: var(--bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Dotted lines: 3px dashes on a 6px pitch. Keep in sync with PITCH in dot-line.tsx. */
+.dots-x {
+  height: 1px;
+  background-image: linear-gradient(to right, var(--grid) 50%, transparent 0);
+  background-size: 6px 1px;
+}
+
+.dots-y {
+  width: 1px;
+  background-image: linear-gradient(to bottom, var(--grid) 50%, transparent 0);
+  background-size: 1px 6px;
+}
+
+/* Dotted connector for timeline lists: same dashes as the rails, a step brighter so it reads at list scale. */
+.dots-list-y {
+  width: 1px;
+  background-image: linear-gradient(to bottom, color-mix(in oklab, var(--faint) 70%, transparent) 50%, transparent 0);
+  background-size: 1px 6px;
+}
+
+/* Underline that darkens on hover, used for inline links. */
+@utility link {
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms ease;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Press feedback lives on pointer-down and is instant. */
+@utility press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 150ms ease,
+    border-color 150ms ease;
+
+  &:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+}
+
+/* Buttons */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding-inline: 0.9rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 150ms ease,
+    border-color 150ms ease;
+
+  &:hover {
+    background: var(--subtle);
+    border-color: var(--grid);
+  }
+  &:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+}
+
+/* Logos pop in after the sentence that contains them. */
+@utility pop {
+  animation: pop 400ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 120ms);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade 250ms ease both;
+    animation-delay: 0ms;
+  }
+}
+
+/* Page-load entrance: short stagger, opacity-only under reduced motion. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(2px);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@utility enter {
+  animation: rise 600ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade 250ms ease both;
+    animation-delay: 0ms;
+  }
+}
+
+/* ——— Article prose (TanStack Markdown output) ——— */
+
+.prose {
+  color: var(--fg);
+  font-size: 1rem;
+  line-height: 1.7;
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+  & p,
+  & li {
+    color: color-mix(in oklab, var(--fg) 82%, var(--muted));
+  }
+  & h2,
+  & h3,
+  & h4 {
+    position: relative;
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    scroll-margin-top: 6rem;
+    line-height: 1.25;
+  }
+  & h2 {
+    margin-top: 2.5em;
+    font-size: 1.3em;
+  }
+  & h3 {
+    margin-top: 2em;
+    font-size: 1.1em;
+  }
+  & h4 {
+    margin-top: 1.75em;
+  }
+  & .heading-anchor {
+    margin-left: 0.4em;
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+  & :is(h2, h3, h4):hover .heading-anchor {
+    opacity: 1;
+  }
+  & a:not(.heading-anchor) {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--faint);
+    text-underline-offset: 3px;
+    &:hover {
+      text-decoration-color: var(--accent);
+    }
+  }
+  & strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  & ul,
+  & ol {
+    padding-left: 1.25em;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & li::marker {
+    color: var(--faint);
+  }
+  & blockquote {
+    border-left: 3px solid var(--border);
+    border-radius: 2px;
+    padding-left: 1em;
+    color: var(--muted);
+  }
+  & hr {
+    border: 0;
+    height: 1px;
+    margin-block: 2.5em;
+    background: var(--border);
+  }
+  & img {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  & table {
+    width: 100%;
+    font-size: 0.9em;
+    border-collapse: collapse;
+  }
+  & th,
+  & td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5em 0.75em;
+    text-align: left;
+  }
+  & th {
+    font-weight: 500;
+  }
+  & :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: var(--subtle);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0.1em 0.35em;
+  }
+
+  /* Callouts: > [!NOTE] */
+  & .markdown-alert {
+    --tone: var(--accent);
+    border: 1px solid color-mix(in oklab, var(--tone) 30%, var(--border));
+    background: color-mix(in oklab, var(--tone) 6%, transparent);
+    border-radius: 10px;
+    padding: 1em 1.2em;
+    & > * + * {
+      margin-top: 0.5em;
+    }
+  }
+  & .markdown-alert-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    color: var(--tone);
+  }
+  & .markdown-alert-content > * + * {
+    margin-top: 0.75em;
+  }
+  & .markdown-alert-tip {
+    --tone: #16a34a;
+  }
+  & .markdown-alert-warning {
+    --tone: #d97706;
+  }
+  & .markdown-alert-caution {
+    --tone: #dc2626;
+  }
+  & .markdown-alert-important {
+    --tone: #9333ea;
+  }
+}
+
+/* ——— Code blocks (Shiki dual theme) ——— */
+
+.tm-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+  background: var(--code-bg);
+  tab-size: 2;
+}
+
+.tm-code span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+}
+
+.dark .tm-code span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+}
+
+.tm-code-frame figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}

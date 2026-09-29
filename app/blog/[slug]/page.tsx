@@ -1,0 +1,40 @@
+import type { Metadata } from 'next';
+import { draftMode } from 'next/headers';
+import { notFound } from 'next/navigation';
+import { EntryArticle } from '@/components/content/entry-article';
+import { getEntry, getSlugs } from '@/lib/hygraph';
+
+type Props = { params: Promise<{ slug: string }> };
+
+export async function generateStaticParams() {
+  const slugs = await getSlugs('post');
+  return slugs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getEntry('post', slug);
+  if (!post) return {};
+
+  return {
+    title: post.title,
+    description: post.description,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.description,
+      publishedTime: post.createdAt,
+      modifiedTime: post.updatedAt,
+      tags: post.tags.map(({ tag }) => tag),
+    },
+  };
+}
+
+export default async function PostPage({ params }: Props) {
+  const { slug } = await params;
+  const [post, draft] = await Promise.all([getEntry('post', slug), draftMode()]);
+  if (!post) notFound();
+
+  return <EntryArticle entry={post} back={{ href: '/blog', label: 'Writing' }} isDraft={draft.isEnabled} />;
+}
