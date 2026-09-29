@@ -1,0 +1,274 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --bg: #f7f7f6;
+  --surface: #fbfbfa;
+  --subtle: #efefed;
+  --border: #e3e3e0;
+  --fg: #1c1c1a;
+  --muted: #6b6b66;
+  --faint: #a3a39e;
+  --accent: #4f63e6;
+  --hatch: #dcdcd8;
+  --code-bg: #f2f2f0;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #09090b;
+  --surface: #0e0e11;
+  --subtle: #17171b;
+  --border: #222227;
+  --fg: #ececee;
+  --muted: #8d8d96;
+  --faint: #55555d;
+  --accent: #7b8cff;
+  --hatch: #1d1d22;
+  --code-bg: #0e141a;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@utility hatch {
+  background-image: repeating-linear-gradient(-45deg, var(--hatch) 0 1px, transparent 1px 7px);
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Underline that grows on hover, used for inline links. */
+@utility link {
+  text-decoration-line: underline;
+  text-decoration-color: var(--border);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms ease;
+
+  &:hover {
+    text-decoration-color: var(--fg);
+  }
+}
+
+/* ——— Article prose (TanStack Markdown output) ——— */
+
+.prose {
+  color: var(--fg);
+  font-size: 15.5px;
+  line-height: 1.75;
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+  & p,
+  & li {
+    color: color-mix(in oklab, var(--fg) 82%, var(--muted));
+  }
+  & h2,
+  & h3,
+  & h4 {
+    position: relative;
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    scroll-margin-top: 5rem;
+    line-height: 1.35;
+  }
+  & h2 {
+    margin-top: 2.5em;
+    font-size: 1.3em;
+  }
+  & h3 {
+    margin-top: 2em;
+    font-size: 1.1em;
+  }
+  & h4 {
+    margin-top: 1.75em;
+  }
+  & .heading-anchor {
+    margin-left: 0.4em;
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+  & :is(h2, h3, h4):hover .heading-anchor {
+    opacity: 1;
+  }
+  & a:not(.heading-anchor) {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--faint);
+    text-underline-offset: 3px;
+    &:hover {
+      text-decoration-color: var(--accent);
+    }
+  }
+  & strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  & ul,
+  & ol {
+    padding-left: 1.25em;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & li::marker {
+    color: var(--faint);
+  }
+  & blockquote {
+    border-left: 2px solid var(--border);
+    padding-left: 1em;
+    color: var(--muted);
+    font-style: italic;
+  }
+  & hr {
+    border: 0;
+    height: 1.5rem;
+    margin-block: 2.5em;
+    background-image: repeating-linear-gradient(-45deg, var(--hatch) 0 1px, transparent 1px 7px);
+  }
+  & img {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  & table {
+    width: 100%;
+    font-size: 0.9em;
+    border-collapse: collapse;
+  }
+  & th,
+  & td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5em 0.75em;
+    text-align: left;
+  }
+  & th {
+    font-weight: 500;
+  }
+  & :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: var(--subtle);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0.1em 0.35em;
+  }
+
+  /* Callouts: > [!NOTE] */
+  & .markdown-alert {
+    --tone: var(--accent);
+    border: 1px solid color-mix(in oklab, var(--tone) 30%, var(--border));
+    background: color-mix(in oklab, var(--tone) 6%, transparent);
+    border-radius: 10px;
+    padding: 0.9em 1.1em;
+    & > * + * {
+      margin-top: 0.5em;
+    }
+  }
+  & .markdown-alert-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tone);
+  }
+  & .markdown-alert-content > * + * {
+    margin-top: 0.75em;
+  }
+  & .markdown-alert-tip {
+    --tone: #16a34a;
+  }
+  & .markdown-alert-warning {
+    --tone: #d97706;
+  }
+  & .markdown-alert-caution {
+    --tone: #dc2626;
+  }
+  & .markdown-alert-important {
+    --tone: #9333ea;
+  }
+}
+
+/* ——— Code blocks (Shiki dual theme) ——— */
+
+.tm-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+  background: var(--code-bg);
+  tab-size: 2;
+}
+
+.tm-code span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+}
+
+.dark .tm-code span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+}
+
+.tm-code-frame figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
