@@ -16,8 +16,8 @@ export function Section({ id, label, aside, intro = false, className, children }
   const content = (
     <>
       {label ? (
-        <div className="mb-6 flex items-baseline justify-between gap-4">
-          <h2 className="label">{label}</h2>
+        <div className="mb-4 flex items-baseline justify-between gap-4 px-1">
+          <h2 className="title-2 text-fg">{label}</h2>
           {aside}
         </div>
       ) : null}
@@ -26,7 +26,7 @@ export function Section({ id, label, aside, intro = false, className, children }
   );
 
   return (
-    <section id={id} className={cn('px-5 py-10 sm:px-8 sm:py-12', intro && 'pt-14 sm:pt-16', className)}>
+    <section id={id} className={cn('px-4 py-8 sm:px-6 sm:py-10', intro && 'pt-16 pb-6 sm:pt-24', className)}>
       {intro ? content : <Reveal>{content}</Reveal>}
     </section>
   );

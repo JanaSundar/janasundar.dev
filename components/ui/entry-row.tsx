@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { ChevronRight } from '@/components/icons';
 
 type EntryRowProps = {
   href: string;
@@ -13,15 +14,18 @@ export function EntryRow({ href, title, description, date }: EntryRowProps) {
     <li>
       <Link
         href={href}
-        className="group hover:bg-subtle -mx-3 flex items-baseline justify-between gap-4 rounded-lg px-3 py-2.5 transition-colors"
+        className="group hover:bg-subtle active:bg-subtle flex items-center justify-between gap-4 px-4 py-3.5 transition-colors"
       >
         <span className="min-w-0">
           <span className="text-fg block font-medium">{title}</span>
-          {description ? <span className="text-muted line-clamp-1 block text-[13.5px]">{description}</span> : null}
+          {description ? <span className="footnote line-clamp-1 block">{description}</span> : null}
         </span>
-        <time dateTime={date} className="text-faint shrink-0 font-mono text-[11px] tabular-nums">
-          {format(new Date(date), 'MMM yyyy')}
-        </time>
+        <span className="flex shrink-0 items-center gap-2">
+          <time dateTime={date} className="text-faint text-[13px] tabular-nums">
+            {format(new Date(date), 'MMM yyyy')}
+          </time>
+          <ChevronRight className="text-faint/70 transition-transform group-hover:translate-x-0.5" />
+        </span>
       </Link>
     </li>
   );

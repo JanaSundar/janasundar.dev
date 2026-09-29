@@ -80,7 +80,7 @@ export default function SandpackEditor({ files, template = 'react', previewOnly 
     .filter(([name]) => !wanted || wanted.includes(name));
 
   return (
-    <div className="not-prose border-border overflow-hidden rounded-xl border">
+    <div className="not-prose card overflow-hidden rounded-2xl">
       <SandpackProvider
         template={template as SandpackPredefinedTemplate}
         theme={resolvedTheme === 'dark' ? sorcerer : 'light'}

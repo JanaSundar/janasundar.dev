@@ -3,13 +3,14 @@ import { ArrowUpRight } from '@/components/icons';
 
 const wrapHue = (hue: number) => hue % 360;
 
+/** App-icon style tile: continuous squircle-ish corners, soft gloss and a hairline edge. */
 function ProjectIcon({ hue, glyph }: Pick<Project, 'hue' | 'glyph'>) {
   return (
     <span
       aria-hidden
-      className="grid size-9 shrink-0 place-items-center rounded-[10px] font-mono text-[12px] font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.25),0_1px_2px_rgb(0_0_0/0.12)]"
+      className="grid size-11 shrink-0 place-items-center rounded-[10px] text-[15px] font-semibold tracking-tight text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.3),inset_0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.15)]"
       style={{
-        background: `linear-gradient(145deg, oklch(0.68 0.16 ${wrapHue(hue)}), oklch(0.5 0.18 ${wrapHue(hue + 25)}))`,
+        background: `linear-gradient(160deg, oklch(0.74 0.15 ${wrapHue(hue)}), oklch(0.55 0.19 ${wrapHue(hue + 25)}))`,
       }}
     >
       {glyph}
@@ -24,16 +25,14 @@ export function ProjectRow({ name, description, href, hue, glyph }: Project) {
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="group hover:bg-subtle -mx-3 flex items-start gap-3.5 rounded-xl px-3 py-2.5 transition-colors"
+        className="group hover:bg-subtle active:bg-subtle flex items-center gap-3.5 px-4 py-3 transition-colors"
       >
         <ProjectIcon hue={hue} glyph={glyph} />
         <span className="min-w-0 flex-1">
-          <span className="text-fg flex items-center gap-1.5 font-medium">
-            {name}
-            <ArrowUpRight className="text-faint opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
-          </span>
-          <span className="text-muted block text-[13.5px]">{description}</span>
+          <span className="text-fg block font-medium">{name}</span>
+          <span className="footnote block">{description}</span>
         </span>
+        <ArrowUpRight className="text-faint/70 shrink-0 transition-transform group-hover:translate-x-px group-hover:-translate-y-px" />
       </a>
     </li>
   );

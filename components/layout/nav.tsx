@@ -21,12 +21,12 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="border-border bg-surface/80 sticky top-0 z-40 border-b backdrop-blur-md">
-      <nav className="flex h-12 items-center justify-between px-5 sm:px-8" aria-label="Main">
-        <Link href="/" aria-label="Home" className="text-fg transition-opacity hover:opacity-70">
-          <Logo width={16} height={16} />
+    <header className="sticky top-3 z-40 px-3 pt-3 sm:px-4">
+      <nav className="material flex h-12 items-center justify-between rounded-full pr-1.5 pl-4" aria-label="Main">
+        <Link href="/" aria-label="Home" className="text-fg press transition-opacity hover:opacity-70">
+          <Logo width={18} height={18} />
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <ul className="flex items-center">
             {links.map(({ href, label }) => {
               const active = isActive(pathname, href);
@@ -35,18 +35,18 @@ export function Nav() {
                   <Link
                     href={href}
                     aria-current={active ? 'page' : undefined}
-                    className={`relative block px-2 py-1 font-mono text-[11px] tracking-[0.12em] uppercase transition-colors sm:px-2.5 ${
+                    className={`relative block rounded-full px-2.5 py-1.5 text-[13px] font-medium tracking-[-0.006em] transition-colors sm:px-3.5 ${
                       active ? 'text-fg' : 'text-muted hover:text-fg'
                     }`}
                   >
-                    {label}
                     {active ? (
                       <motion.span
-                        layoutId="nav-underline"
-                        className="bg-fg absolute inset-x-2 -bottom-[13px] h-px sm:inset-x-2.5"
-                        transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+                        layoutId="nav-pill"
+                        className="bg-fg/[0.07] absolute inset-0 rounded-full"
+                        transition={{ type: 'spring', duration: 0.35, bounce: 0 }}
                       />
                     ) : null}
+                    <span className="relative">{label}</span>
                   </Link>
                 </li>
               );

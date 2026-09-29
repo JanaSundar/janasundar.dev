@@ -1,7 +1,7 @@
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { crafts, CraftCard } from '@/components/crafts';
-import { CimpressLogo, GithubIcon, LinkedInIcon, Monogram, XIcon } from '@/components/icons';
-import { HatchDivider } from '@/components/layout/hatch-divider';
+import { ArrowUpRight, CimpressLogo, GithubIcon, LinkedInIcon, Monogram, XIcon } from '@/components/icons';
 import { Section } from '@/components/layout/section';
 import { CopyEmail } from '@/components/ui/copy-email';
 import { EntryRow } from '@/components/ui/entry-row';
@@ -22,7 +22,7 @@ function formatPeriod(start: string, end?: string) {
 }
 
 function SeeAll({ href, children }: { href: string; children: string }) {
-  const className = 'text-muted hover:text-fg font-mono text-[11px] tracking-wide transition-colors';
+  const className = 'text-accent text-[15px] transition-opacity hover:opacity-70';
   if (!href.startsWith('/') || href.includes('.')) {
     return (
       <a href={href} target="_blank" rel="noreferrer" className={className}>
@@ -49,9 +49,13 @@ export default async function Home() {
   return (
     <>
       <Section intro>
-        <h1 className="text-fg text-[17px] font-medium tracking-tight">{site.name}.</h1>
-        <p className="label mt-0.5">{site.role}</p>
-        <div className="text-muted mt-6 space-y-4">
+        <h1 className="title-1 text-fg enter" style={{ '--i': 0 } as CSSProperties}>
+          {site.name}.
+        </h1>
+        <p className="callout text-muted enter mt-2" style={{ '--i': 1 } as CSSProperties}>
+          {site.role}
+        </p>
+        <div className="text-muted enter mt-8 space-y-4" style={{ '--i': 2 } as CSSProperties}>
           <p>
             I build fast, thoughtful products for the web, end to end — from React interfaces to the Node services
             behind them. I currently work as a software engineer at{' '}
@@ -66,7 +70,7 @@ export default async function Home() {
               Cognizant
             </InlineLink>{' '}
             in R&amp;D, prototyping web and mobile apps. Outside work: family, movies, and{' '}
-            <Link href="/blog" className="link text-fg">
+            <Link href="/blog" className="text-accent underline-offset-4 hover:underline">
               writing
             </Link>{' '}
             about what I learn.
@@ -74,36 +78,28 @@ export default async function Home() {
         </div>
       </Section>
 
-      <HatchDivider />
-
       <Section label="Experience" aside={<SeeAll href={site.resume}>Résumé</SeeAll>}>
-        <ol className="space-y-5">
+        <ol className="grouped">
           {experience.map((job) => (
-            <li key={job.company} className="grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-x-6">
-              <p className="text-fg">
-                <span className="font-medium">{job.role}</span>
-                <span className="text-muted"> · {job.company}</span>
-              </p>
-              <p className="text-faint font-mono text-[11px] tabular-nums sm:row-span-2 sm:pt-1">
-                {formatPeriod(job.start, job.end)}
-              </p>
-              <p className="text-muted text-[13.5px]">{job.summary}</p>
+            <li key={job.company} className="px-4 py-4">
+              <div className="flex items-baseline justify-between gap-4">
+                <p className="text-fg font-medium">{job.role}</p>
+                <p className="text-faint shrink-0 text-[13px] tabular-nums">{formatPeriod(job.start, job.end)}</p>
+              </div>
+              <p className="text-muted text-[15px]">{job.company}</p>
+              <p className="footnote mt-1.5">{job.summary}</p>
             </li>
           ))}
         </ol>
       </Section>
 
-      <HatchDivider />
-
       <Section label="Projects" aside={<SeeAll href={site.socials.github.href}>GitHub</SeeAll>}>
-        <ul className="space-y-1">
+        <ul className="grouped">
           {projects.map((project) => (
             <ProjectRow key={project.name} {...project} />
           ))}
         </ul>
       </Section>
-
-      <HatchDivider />
 
       <Section label="Crafts" aside={<SeeAll href="/crafts">Explore more</SeeAll>}>
         <div className="space-y-10">
@@ -115,9 +111,8 @@ export default async function Home() {
 
       {posts.length ? (
         <>
-          <HatchDivider />
           <Section label="Writing" aside={<SeeAll href="/blog">All posts</SeeAll>}>
-            <ul>
+            <ul className="grouped">
               {posts.map((post) => (
                 <EntryRow key={post.slug} href={`/blog/${post.slug}`} title={post.title} date={post.createdAt} />
               ))}
@@ -126,27 +121,27 @@ export default async function Home() {
         </>
       ) : null}
 
-      <HatchDivider />
-
-      <Section label="Let's connect">
-        <div className="space-y-4">
-          <CopyEmail email={site.email} />
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
-            {socials.map(({ label, href, handle, Icon }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group text-muted hover:text-fg inline-flex items-center gap-2 transition-colors"
-                >
-                  <Icon />
-                  <span className="text-[13.5px]">{handle}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <Section label="Let’s connect">
+        <ul className="grouped">
+          <li className="px-4 py-3.5">
+            <CopyEmail email={site.email} />
+          </li>
+          {socials.map(({ label, href, handle, Icon }) => (
+            <li key={label}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="group hover:bg-subtle active:bg-subtle flex items-center gap-3 px-4 py-3.5 transition-colors"
+              >
+                <Icon className="text-muted" />
+                <span className="text-fg">{label}</span>
+                <span className="text-faint ml-auto text-[15px]">{handle}</span>
+                <ArrowUpRight className="text-faint/70 transition-transform group-hover:translate-x-px group-hover:-translate-y-px" />
+              </a>
+            </li>
+          ))}
+        </ul>
       </Section>
     </>
   );

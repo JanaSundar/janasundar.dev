@@ -57,7 +57,7 @@ export function HoldToConfirm() {
       onKeyDown={(e) => (e.key === ' ' || e.key === 'Enter') && !e.repeat && start()}
       onKeyUp={(e) => (e.key === ' ' || e.key === 'Enter') && cancel()}
       whileTap={{ scale: 0.97 }}
-      className="border-border bg-surface text-fg relative h-10 w-44 touch-none overflow-hidden rounded-full border text-sm font-medium shadow-sm select-none"
+      className="bg-surface text-fg relative h-11 w-48 touch-none overflow-hidden rounded-full text-[15px] font-medium shadow-[0_1px_3px_rgb(0_0_0/0.15),0_0_0_0.5px_rgb(0_0_0/0.06)] select-none"
     >
       <span className="relative block overflow-hidden">{label('Hold to archive')}</span>
       <motion.span

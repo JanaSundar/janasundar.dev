@@ -51,7 +51,7 @@ export function ToastStack() {
                   exit={{ opacity: 0, x: 40, transition: { duration: 0.15 } }}
                   transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                   style={{ zIndex: toasts.length - index }}
-                  className="border-border bg-surface absolute inset-x-0 top-0 origin-top rounded-xl border px-3.5 py-2 shadow-[0_4px_16px_-6px_rgb(0_0_0/0.18)]"
+                  className="material absolute inset-x-0 top-0 origin-top rounded-2xl px-4 py-2.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
@@ -76,7 +76,7 @@ export function ToastStack() {
       <button
         type="button"
         onClick={push}
-        className="border-border bg-surface text-fg rounded-full border px-3.5 py-1.5 text-[13px] font-medium shadow-sm transition-transform active:scale-95"
+        className="bg-surface text-fg press rounded-full px-4 py-2 text-[15px] font-medium shadow-[0_1px_3px_rgb(0_0_0/0.15),0_0_0_0.5px_rgb(0_0_0/0.06)]"
       >
         Send notification
       </button>

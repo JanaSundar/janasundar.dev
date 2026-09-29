@@ -16,7 +16,7 @@ export function SegmentedControl() {
 
   return (
     <div className="flex flex-col items-center gap-5">
-      <fieldset className="border-border bg-subtle flex rounded-full border p-1">
+      <fieldset className="bg-fg/[0.07] flex rounded-full p-1">
         <legend className="sr-only">Billing period</legend>
         {options.map((option) => (
           <label
@@ -34,8 +34,8 @@ export function SegmentedControl() {
             {active === option.id ? (
               <motion.span
                 layoutId={pill}
-                className="border-border bg-surface absolute inset-0 rounded-full border shadow-sm"
-                transition={{ type: 'spring', stiffness: 500, damping: 38 }}
+                className="bg-surface absolute inset-0 rounded-full shadow-[0_1px_3px_rgb(0_0_0/0.15),0_0_0_0.5px_rgb(0_0_0/0.04)]"
+                transition={{ type: 'spring', duration: 0.35, bounce: 0 }}
               />
             ) : null}
             <span className="relative">{option.label}</span>
@@ -49,10 +49,10 @@ export function SegmentedControl() {
             initial={{ y: 20, opacity: 0, filter: 'blur(4px)' }}
             animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
             exit={{ y: -20, opacity: 0, filter: 'blur(4px)' }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
           >
             <p className="text-fg text-2xl font-semibold tracking-tight tabular-nums">{current.value}</p>
-            <p className="text-muted font-mono text-[11px]">{current.note}</p>
+            <p className="footnote">{current.note}</p>
           </motion.div>
         </AnimatePresence>
       </div>

@@ -12,36 +12,57 @@
   --color-faint: var(--faint);
   --color-accent: var(--accent);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', SFMono-Regular, monospace;
+
+  /* Motion tokens (strong curves; built-in easings are too weak). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 :root {
-  --bg: #f7f7f6;
-  --surface: #fbfbfa;
-  --subtle: #efefed;
-  --border: #e3e3e0;
-  --fg: #1c1c1a;
-  --muted: #6b6b66;
-  --faint: #a3a39e;
-  --accent: #4f63e6;
-  --hatch: #dcdcd8;
-  --code-bg: #f2f2f0;
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --subtle: #f2f2f4;
+  --border: rgb(0 0 0 / 0.08);
+  --fg: #1d1d1f;
+  --muted: #6e6e73;
+  --faint: #86868b;
+  --accent: #0066cc;
+  --code-bg: #f5f5f7;
+  --highlight: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.1);
   color-scheme: light;
 }
 
 .dark {
-  --bg: #09090b;
-  --surface: #0e0e11;
-  --subtle: #17171b;
-  --border: #222227;
-  --fg: #ececee;
-  --muted: #8d8d96;
-  --faint: #55555d;
-  --accent: #7b8cff;
-  --hatch: #1d1d22;
+  --bg: #000000;
+  --surface: #1c1c1e;
+  --subtle: #2c2c2e;
+  --border: rgb(255 255 255 / 0.1);
+  --fg: #f5f5f7;
+  --muted: #a1a1a6;
+  --faint: #86868b;
+  --accent: #2997ff;
   --code-bg: #0e141a;
+  --highlight: rgb(255 255 255 / 0.08);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
   color-scheme: dark;
+}
+
+/* Increased contrast: defined borders, no soft hairlines. */
+@media (prefers-contrast: more) {
+  :root {
+    --border: rgb(0 0 0 / 0.4);
+    --muted: #515154;
+    --faint: #6e6e73;
+  }
+  .dark {
+    --border: rgb(255 255 255 / 0.45);
+    --muted: #c7c7cc;
+    --faint: #aeaeb2;
+  }
 }
 
 @layer base {
@@ -55,8 +76,10 @@
   body {
     background: var(--bg);
     color: var(--fg);
-    font-size: 15px;
-    line-height: 1.65;
+    font-size: 1.0625rem; /* 17px, Apple's body size */
+    line-height: 1.47;
+    letter-spacing: -0.022em;
+    font-optical-sizing: auto;
   }
 
   ::selection {
@@ -66,32 +89,146 @@
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 6px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
-@utility hatch {
-  background-image: repeating-linear-gradient(-45deg, var(--hatch) 0 1px, transparent 1px 7px);
+/* Typography: tracking and leading tighten as size grows. */
+@utility title-1 {
+  font-size: clamp(2.25rem, 6vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
 }
 
-@utility label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+@utility title-2 {
+  font-size: 1.375rem;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+}
+
+@utility callout {
+  font-size: 1.1875rem;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+@utility footnote {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: -0.006em;
   color: var(--muted);
 }
 
-/* Underline that grows on hover, used for inline links. */
+@utility label {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: -0.006em;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* Grouped surface: Apple's inset-grouped list. Rows separated by inset hairlines. */
+@utility card {
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 1px var(--border),
+    var(--shadow);
+}
+
+@utility grouped {
+  background: var(--surface);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px var(--border),
+    var(--shadow);
+
+  & > li {
+    position: relative;
+  }
+  & > li + li::before {
+    content: '';
+    position: absolute;
+    inset-inline: 1rem;
+    top: 0;
+    height: 1px;
+    background: var(--border);
+  }
+}
+
+/* Translucent material: content scrolls underneath, bright top edge = light catching the glass. */
+.material {
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 0 0 1px var(--border),
+    inset 0 1px 0 var(--highlight),
+    0 8px 24px -12px rgb(0 0 0 / 0.2);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Underline that darkens on hover, used for inline links. */
 @utility link {
   text-decoration-line: underline;
-  text-decoration-color: var(--border);
+  text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   transition: text-decoration-color 150ms ease;
 
   &:hover {
-    text-decoration-color: var(--fg);
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Press feedback lives on pointer-down and is instant. */
+@utility press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 150ms ease;
+
+  &:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+}
+
+/* Page-load entrance: short stagger, opacity-only under reduced motion. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@utility enter {
+  animation: rise 600ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade 250ms ease both;
+    animation-delay: 0ms;
   }
 }
 
@@ -99,8 +236,8 @@
 
 .prose {
   color: var(--fg);
-  font-size: 15.5px;
-  line-height: 1.75;
+  font-size: 1.0625rem;
+  line-height: 1.6;
 
   & > * + * {
     margin-top: 1.25em;
@@ -114,10 +251,10 @@
   & h4 {
     position: relative;
     color: var(--fg);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    scroll-margin-top: 5rem;
-    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    scroll-margin-top: 6rem;
+    line-height: 1.25;
   }
   & h2 {
     margin-top: 2.5em;
@@ -171,19 +308,19 @@
     color: var(--faint);
   }
   & blockquote {
-    border-left: 2px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 2px;
     padding-left: 1em;
     color: var(--muted);
-    font-style: italic;
   }
   & hr {
     border: 0;
-    height: 1.5rem;
+    height: 1px;
     margin-block: 2.5em;
-    background-image: repeating-linear-gradient(-45deg, var(--hatch) 0 1px, transparent 1px 7px);
+    background: var(--border);
   }
   & img {
-    border-radius: 10px;
+    border-radius: 14px;
     border: 1px solid var(--border);
   }
   & table {
@@ -214,17 +351,16 @@
     --tone: var(--accent);
     border: 1px solid color-mix(in oklab, var(--tone) 30%, var(--border));
     background: color-mix(in oklab, var(--tone) 6%, transparent);
-    border-radius: 10px;
-    padding: 0.9em 1.1em;
+    border-radius: 16px;
+    padding: 1em 1.2em;
     & > * + * {
       margin-top: 0.5em;
     }
   }
   & .markdown-alert-title {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.006em;
     color: var(--tone);
   }
   & .markdown-alert-content > * + * {

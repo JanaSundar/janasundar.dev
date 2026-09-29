@@ -53,6 +53,12 @@ export const ArrowUpRight = (props: IconProps) => (
   </svg>
 );
 
+export const ChevronRight = (props: IconProps) => (
+  <svg width={12} height={12} viewBox="0 0 16 16" aria-hidden {...stroke} strokeWidth={1.8} {...props}>
+    <path d="m6 3.5 4.5 4.5L6 12.5" />
+  </svg>
+);
+
 export const ArrowLeft = (props: IconProps) => (
   <svg width={14} height={14} viewBox="0 0 24 24" aria-hidden {...stroke} strokeWidth={2} {...props}>
     <path d="M19 12H5m6-6-6 6 6 6" />
@@ -95,7 +101,7 @@ export const CimpressLogo = (props: IconProps) => (
 export const Monogram = ({ letter, className }: { letter: string; className?: string }) => (
   <span
     aria-hidden
-    className={`bg-fg text-bg inline-grid size-[15px] place-items-center rounded-[4px] font-mono text-[9px] font-semibold ${className ?? ''}`}
+    className={`bg-fg text-bg inline-grid size-[15px] place-items-center rounded-[5px] text-[9px] font-semibold ${className ?? ''}`}
   >
     {letter}
   </span>

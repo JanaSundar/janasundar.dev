@@ -42,11 +42,11 @@ export const crafts: Craft[] = [
 export function CraftCard({ title, description, Demo }: Craft) {
   return (
     <article>
-      <div className="border-border bg-subtle relative grid h-60 place-items-center overflow-hidden rounded-xl border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:14px_14px]">
+      <div className="card bg-subtle relative grid h-64 place-items-center overflow-hidden">
         <Demo />
       </div>
-      <h3 className="text-fg mt-4 font-medium">{title}</h3>
-      <p className="text-muted mt-1 text-[13.5px]">{description}</p>
+      <h3 className="text-fg mt-4 px-1 font-semibold">{title}</h3>
+      <p className="footnote mt-1 px-1">{description}</p>
     </article>
   );
 }

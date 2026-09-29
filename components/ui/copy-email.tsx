@@ -24,19 +24,19 @@ export function CopyEmail({ email }: { email: string }) {
     <button
       type="button"
       onClick={copy}
-      className="group text-fg inline-flex items-center gap-2.5"
+      className="group text-fg press flex w-full items-center gap-3 text-left"
       aria-label={`Copy email address ${email}`}
     >
       <MailIcon className="text-muted" />
-      <span className="link">{email}</span>
-      <span className="text-faint group-hover:text-fg relative grid size-4 place-items-center">
+      <span>{email}</span>
+      <span className="text-faint group-hover:text-fg relative ml-auto grid size-4 place-items-center">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             key={copied ? 'check' : 'copy'}
-            initial={{ opacity: 0, scale: 0.5, filter: 'blur(2px)' }}
+            initial={{ opacity: 0, scale: 0.7, filter: 'blur(2px)' }}
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.5, filter: 'blur(2px)' }}
-            transition={{ duration: 0.15 }}
+            exit={{ opacity: 0, scale: 0.7, filter: 'blur(2px)' }}
+            transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
             className={copied ? 'text-accent' : undefined}
           >
             {copied ? <CheckIcon /> : <CopyIcon />}

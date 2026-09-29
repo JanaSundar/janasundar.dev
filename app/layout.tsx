@@ -3,7 +3,6 @@ import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
 import type { ReactNode } from 'react';
 import { Footer } from '@/components/layout/footer';
-import { HatchDivider } from '@/components/layout/hatch-divider';
 import { Nav } from '@/components/layout/nav';
 import { Providers } from '@/components/layout/providers';
 import { site } from '@/content/site';
@@ -25,8 +24,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f7f7f6' },
-    { media: '(prefers-color-scheme: dark)', color: '#09090b' },
+    { media: '(prefers-color-scheme: light)', color: '#f5f5f7' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
   ],
 };
 
@@ -37,16 +36,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           <a
             href="#main"
-            className="bg-fg text-bg sr-only z-50 rounded-md px-3 py-2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+            className="bg-fg text-bg sr-only z-50 rounded-full px-4 py-2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
           >
             Skip to content
           </a>
-          <div className="border-border bg-surface mx-auto flex min-h-dvh w-full max-w-[44rem] flex-col border-x">
+          <div className="mx-auto flex min-h-dvh w-full max-w-[44rem] flex-col">
             <Nav />
             <main id="main" className="flex-1">
               {children}
             </main>
-            <HatchDivider />
             <Footer />
           </div>
         </Providers>

@@ -12,11 +12,7 @@ type SandpackProps = {
 
 const SandpackEditor = dynamic(() => import('./sandpack-editor'), {
   ssr: false,
-  loading: () => (
-    <div className="border-border bg-subtle text-faint grid h-[420px] place-items-center rounded-xl border font-mono text-[11px]">
-      Loading sandbox…
-    </div>
-  ),
+  loading: () => <div className="card text-faint grid h-[420px] place-items-center text-[13px]">Loading sandbox…</div>,
 });
 
 export function Sandpack(props: SandpackProps) {

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
+import type { CSSProperties } from 'react';
 import { ArrowUpRight } from '@/components/icons';
-import { HatchDivider } from '@/components/layout/hatch-divider';
 import { Section } from '@/components/layout/section';
 import { uses } from '@/content/uses';
 
@@ -14,24 +14,25 @@ export default function UsesPage() {
   return (
     <>
       <Section intro>
-        <h1 className="text-fg text-[17px] font-medium tracking-tight">Uses</h1>
-        <p className="text-muted mt-2">The software and hardware I reach for every day.</p>
+        <h1 className="title-1 text-fg enter">Uses</h1>
+        <p className="callout text-muted enter mt-3" style={{ '--i': 1 } as CSSProperties}>
+          The software and hardware I reach for every day.
+        </p>
       </Section>
       {Object.entries(uses).map(([group, items]) => (
         <div key={group}>
-          <HatchDivider />
           <Section label={group}>
-            <ul className="grid gap-x-6 sm:grid-cols-2">
+            <ul className="grouped">
               {items.map((item) => (
                 <li key={item.name}>
                   <a
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="group text-fg hover:bg-subtle -mx-3 flex items-center justify-between rounded-lg px-3 py-2 transition-colors"
+                    className="group text-fg hover:bg-subtle active:bg-subtle flex items-center justify-between px-4 py-3 transition-colors"
                   >
                     {item.name}
-                    <ArrowUpRight className="text-faint opacity-0 transition-opacity group-hover:opacity-100" />
+                    <ArrowUpRight className="text-faint/70 transition-transform group-hover:translate-x-px group-hover:-translate-y-px" />
                   </a>
                 </li>
               ))}

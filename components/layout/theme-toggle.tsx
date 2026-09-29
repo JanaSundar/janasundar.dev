@@ -15,7 +15,7 @@ export function ThemeToggle() {
       type="button"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label={mounted ? `Switch to ${isDark ? 'light' : 'dark'} theme` : 'Toggle theme'}
-      className="text-muted hover:bg-subtle hover:text-fg relative grid size-7 place-items-center rounded-md transition-colors"
+      className="text-muted hover:bg-fg/[0.07] hover:text-fg press relative grid size-8 place-items-center rounded-full"
     >
       <AnimatePresence mode="wait" initial={false}>
         {mounted ? (
@@ -29,10 +29,10 @@ export function ThemeToggle() {
             strokeWidth={1.6}
             strokeLinecap="round"
             aria-hidden
-            initial={{ rotate: -90, scale: 0.6, opacity: 0 }}
+            initial={{ rotate: -60, scale: 0.7, opacity: 0 }}
             animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={{ rotate: 90, scale: 0.6, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            exit={{ rotate: 60, scale: 0.7, opacity: 0 }}
+            transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
           >
             {isDark ? (
               <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />

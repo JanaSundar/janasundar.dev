@@ -35,10 +35,10 @@ function DockItem({ mouseX, name, hue, glyph }: { mouseX: MotionValue<number> } 
         height: size,
         background: `linear-gradient(145deg, oklch(0.72 0.15 ${hue}), oklch(0.52 0.17 ${hue + 20}))`,
       }}
-      className="group relative grid shrink-0 place-items-center rounded-[28%] font-mono text-[13px] font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.3),0_2px_6px_rgb(0_0_0/0.15)]"
+      className="group relative grid shrink-0 place-items-center rounded-[24%] text-[14px] font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.3),0_2px_6px_rgb(0_0_0/0.15)]"
     >
       {glyph}
-      <span className="border-border bg-surface text-fg pointer-events-none absolute -top-7 rounded-md border px-1.5 py-0.5 font-sans text-[11px] font-normal opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+      <span className="material text-fg pointer-events-none absolute -top-8 rounded-lg px-2 py-0.5 font-sans text-[12px] font-normal opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
         {name}
       </span>
     </motion.button>
@@ -52,7 +52,7 @@ export function MagneticDock() {
     <div
       onMouseMove={(e) => mouseX.set(e.clientX)}
       onMouseLeave={() => mouseX.set(Infinity)}
-      className="border-border bg-surface/70 flex h-[76px] items-end gap-2.5 rounded-2xl border px-3 pb-2.5 shadow-sm backdrop-blur"
+      className="material flex h-[76px] items-end gap-2.5 rounded-[22px] px-3 pb-2.5"
     >
       {apps.map((app) => (
         <DockItem key={app.name} mouseX={mouseX} {...app} />
