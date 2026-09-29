@@ -1,5 +1,5 @@
 {
-  "name": "janasundar.dev",
+  "name": "janasundar.vercel.app",
   "version": "3.0.0",
   "private": true,
   "type": "module",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
+    "@takumi-rs/image-response": "^2.14.0",
     "@tanstack/highlight": "0.1.0",
     "@tanstack/markdown": "0.0.15",
     "clsx": "^2.1.1",

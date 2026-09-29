@@ -1,4 +1,4 @@
-# janasundar.dev
+# janasundar.vercel.app
 
 My portfolio and blog, v3.
 
@@ -34,5 +34,5 @@ Older MDX posts that use `<Callout>`, `<Sandpack />` or `<Spoiler>` are rewritte
 
 ### Hygraph setup
 
-- **Webhook:** on publish or unpublish, `POST https://janasundar.dev/api/revalidate` with the header `x-revalidate-secret: $HYGRAPH_REVALIDATE_SECRET`.
-- **Preview URL:** `https://janasundar.dev/api/draft?secret=$HYGRAPH_PREVIEW_SECRET&slug={slug}&type=post` (use `type=snippet` for snippets).
+- **Webhook:** on publish or unpublish, `POST https://janasundar.vercel.app/api/revalidate` with the header `x-revalidate-secret: $HYGRAPH_REVALIDATE_SECRET`.
+- **Preview URL:** `https://janasundar.vercel.app/api/draft?secret=$HYGRAPH_PREVIEW_SECRET&slug={slug}&type=post` (use `type=snippet` for snippets).

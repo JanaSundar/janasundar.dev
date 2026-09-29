@@ -1,63 +1,97 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from '@takumi-rs/image-response';
 import { site } from '@/content/site';
+import { J_PATH } from '@/lib/logo';
 
 export const ogSize = { width: 1200, height: 630 };
 
 const fontDir = join(process.cwd(), 'node_modules/geist/dist/fonts');
 
-/** Shared social card: black dotted grid, tight display type. */
-export async function renderOgImage({ eyebrow, title }: { eyebrow: string; title: string }) {
+// The site's dark palette (see globals.css).
+const color = { bg: '#000', fg: '#ededed', muted: '#a1a1a1' };
+
+// The address shown on post cards.
+const host = site.url.replace('https://', '');
+
+/**
+ * The mark as an outline: the J's stroke drawn twice, wide in the foreground colour and narrower in the background
+ * colour on top, which leaves a hairline along each edge and a hollow middle.
+ */
+function Mark() {
+  const size = 560;
+  const transform = 'translate(0 1)';
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: (ogSize.width - size) / 2,
+        top: (ogSize.height - size) / 2,
+        width: size,
+        height: size,
+        display: 'flex',
+      }}
+    >
+      <svg width={size} height={size} viewBox="0 0 100 100">
+        <path d={J_PATH} fill="none" stroke={color.fg} strokeWidth="14" strokeLinecap="round" transform={transform} />
+        <path d={J_PATH} fill="none" stroke={color.bg} strokeWidth="10.4" strokeLinecap="round" transform={transform} />
+      </svg>
+    </div>
+  );
+}
+
+/**
+ * Shared social card: black and quiet, with nothing but what it needs. With no title it is the outlined mark alone,
+ * which is what the home page uses; with one, the title sits bottom-left with the address above it.
+ */
+export async function renderOgImage({ title }: { title?: string } = {}) {
   const [regular, semibold] = await Promise.all([
     readFile(join(fontDir, 'geist-sans/Geist-Regular.ttf')),
     readFile(join(fontDir, 'geist-sans/Geist-SemiBold.ttf')),
   ]);
 
-  const dots = 'radial-gradient(#2e2e2e 1px, transparent 1px)';
+  const long = (title?.length ?? 0) > 60;
 
   return new ImageResponse(
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        width: '100%',
-        height: '100%',
-        padding: '64px 80px',
-        background: '#000',
-        backgroundImage: dots,
-        backgroundSize: '24px 24px',
-      }}
-    >
-      <div style={{ display: 'flex', fontFamily: 'Geist', fontSize: 26, color: '#a1a1a1', fontWeight: 400 }}>
-        {eyebrow}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          fontFamily: 'Geist',
-          fontWeight: 600,
-          fontSize: title.length > 60 ? 68 : 92,
-          lineHeight: 1.02,
-          letterSpacing: -4,
-          color: '#ededed',
-        }}
-      >
-        {title}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          fontFamily: 'Geist',
-          fontSize: 26,
-          color: '#6f6f6f',
-        }}
-      >
-        <span>{site.name}</span>
-        <span>{site.url.replace('https://', '')}</span>
-      </div>
+    <div style={{ display: 'flex', position: 'relative', width: '100%', height: '100%', background: color.bg }}>
+      {title ? (
+        <>
+          <div
+            style={{
+              position: 'absolute',
+              left: 80,
+              top: 72,
+              display: 'flex',
+              fontFamily: 'Geist',
+              fontSize: 22,
+              letterSpacing: -0.5,
+              color: color.muted,
+            }}
+          >
+            {host}
+          </div>
+
+          <div
+            style={{
+              position: 'absolute',
+              left: 80,
+              bottom: 72,
+              width: 960,
+              display: 'flex',
+              fontFamily: 'Geist',
+              fontWeight: 600,
+              fontSize: long ? 60 : 76,
+              lineHeight: 1.05,
+              letterSpacing: long ? -2.2 : -3,
+              color: color.fg,
+            }}
+          >
+            {title}
+          </div>
+        </>
+      ) : (
+        <Mark />
+      )}
     </div>,
     {
       ...ogSize,

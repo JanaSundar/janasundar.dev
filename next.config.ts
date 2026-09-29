@@ -26,6 +26,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Takumi renders social cards with a native binary that can't be bundled.
+  serverExternalPackages: ['@takumi-rs/core'],
   // PostHog API paths use trailing slashes.
   skipTrailingSlashRedirect: true,
   images: {

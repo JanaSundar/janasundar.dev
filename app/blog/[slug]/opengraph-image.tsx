@@ -9,5 +9,5 @@ export const contentType = 'image/png';
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getEntry('post', slug);
-  return renderOgImage({ eyebrow: 'Writing', title: post?.title ?? site.name });
+  return renderOgImage({ title: post?.title ?? site.name });
 }
