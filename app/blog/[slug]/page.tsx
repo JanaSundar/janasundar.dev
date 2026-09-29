@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { EntryArticle } from '@/components/content/entry-article';
 import { getAdjacent, getEntry, getSlugs } from '@/lib/hygraph';
 import { notFoundMetadata } from '@/lib/not-found';
+import { ogMetadata } from '@/lib/og-metadata';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -21,14 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.title,
     description: post.description,
     alternates: { canonical: `/blog/${slug}` },
-    openGraph: {
+    ...ogMetadata(`/blog/${slug}`, {
       type: 'article',
       title: post.title,
       description: post.description,
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt,
       tags: post.tags.map(({ tag }) => tag),
-    },
+    }),
   };
 }
 
