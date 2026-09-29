@@ -6,5 +6,5 @@ export const size = ogSize;
 export const contentType = 'image/png';
 
 export default function Image() {
-  return renderOgImage({ eyebrow: site.role, title: `${site.name}. Building fast, thoughtful products for the web.` });
+  return renderOgImage();
 }
