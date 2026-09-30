@@ -1,13 +1,9 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
 import { ImageResponse } from '@takumi-rs/image-response';
 import { site } from '@/content/site';
 import { getEntry, type ContentKind } from '@/lib/hygraph';
 import { J_PATH } from '@/lib/logo';
 
 export const ogSize = { width: 1200, height: 630 };
-
-const fontDir = join(process.cwd(), 'node_modules/geist/dist/fonts');
 
 // The site's dark palette (see globals.css).
 const color = { bg: '#000', fg: '#ededed', muted: '#a1a1a1' };
@@ -49,11 +45,6 @@ export async function renderOgImage({
   title,
   path = '',
 }: { title?: string; /** The section the card is for, such as `/blog`. */ path?: string } = {}) {
-  const [regular, semibold] = await Promise.all([
-    readFile(join(fontDir, 'geist-sans/Geist-Regular.ttf')),
-    readFile(join(fontDir, 'geist-sans/Geist-SemiBold.ttf')),
-  ]);
-
   const long = (title?.length ?? 0) > 60;
 
   return new ImageResponse(
@@ -98,13 +89,7 @@ export async function renderOgImage({
         <Mark />
       )}
     </div>,
-    {
-      ...ogSize,
-      fonts: [
-        { name: 'Geist', data: regular, weight: 400 },
-        { name: 'Geist', data: semibold, weight: 600 },
-      ],
-    }
+    ogSize
   );
 }
 
