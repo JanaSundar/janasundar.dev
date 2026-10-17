@@ -2,7 +2,7 @@ export const site = {
   name: 'Jana',
   fullName: 'Janarthanan',
   role: 'Senior Software Engineer',
-  url: 'https://janasundar.vercel.app',
+  url: 'https://janasundar.com',
   description:
     'Senior software engineer from India building fast, thoughtful web products with React, Node and TypeScript. Writing about the web along the way.',
   email: 'mail@janasundar.com',
