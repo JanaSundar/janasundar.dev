@@ -99,6 +99,30 @@ export const DevWizLogo = (props: IconProps) => (
   </svg>
 );
 
+/** Reify: the brand mark, a playhead-style "r". */
+export const ReifyLogo = (props: IconProps) => (
+  <svg width={16} height={20} viewBox="8 7 78 96" aria-hidden {...props}>
+    <g fill="none" stroke="currentColor" strokeWidth={16} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 88V30C20 21 27 17 34 21L62 39" />
+      <path d="M45 66L72 90" />
+    </g>
+    <circle cx="66" cy="42" r="15" fill="currentColor" />
+  </svg>
+);
+
+/** Ovio: the brand mark, an open ring with a flick. */
+export const OvioLogo = (props: IconProps) => (
+  <svg width={22} height={22} viewBox="0 0 96 96" aria-hidden {...props}>
+    <path
+      d="M70 26 A30 30 0 1 0 78 52 C80 40 84 34 90 30"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={10}
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
 /** Luzo: the wordmark, wider than it is tall (decorative: the tile sits next to the name). */
 export const LuzoLogo = (props: IconProps) => (
   <svg width={28} height={11} viewBox="0 0 48 19" fill="currentColor" aria-hidden {...props}>
