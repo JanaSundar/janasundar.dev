@@ -1,9 +1,9 @@
 import { newTab } from '@/lib/external';
 import type { Project } from '@/content/projects';
-import { ArrowUpRight, DevWizLogo, LuzoLogo } from '@/components/icons';
+import { ArrowUpRight, DevWizLogo, LuzoLogo, OvioLogo, ReifyLogo } from '@/components/icons';
 import { RevealLi } from '@/components/ui/reveal';
 
-const logos = { luzo: LuzoLogo, devwiz: DevWizLogo };
+const logos = { luzo: LuzoLogo, devwiz: DevWizLogo, reify: ReifyLogo, ovio: OvioLogo };
 
 const wrapHue = (hue: number) => hue % 360;
 
